@@ -1,0 +1,22 @@
+﻿
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <span class="glyphicon glyphicon-folder-close">
+                    </span>  Giao hàng tận nơi
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="@Url.Action("TimKiem","Home", new {storeType="Cơm trưa"})">Cơm trưa</a></li>
+                <li class="list-group-item"><a href="@Url.Action("TimKiem","Home", new {storeType="Đồ ăn"})">Đồ ăn</a></li>
+                <li class="list-group-item"><a href="@Url.Action("TimKiem","Home", new {storeType="Thức uống"})">Thức uống</a></li>
+                <li class="list-group-item"><a href="@Url.Action("TimKiem","Home", new {storeType="Tráng miệng"})">Tráng miệng</a></li>
+                <li class="list-group-item"><a href="@Url.Action("TimKiem","Home", new {storeType="NHÀ HÀNG"})">Nhà hàng</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

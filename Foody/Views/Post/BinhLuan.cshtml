@@ -1,0 +1,80 @@
+﻿<link href="~/Content/binhluan.css" rel="stylesheet" />
+<link href="~/Content/star-rating.css" rel="stylesheet" />
+<div class="widget-area no-padding blank">
+    <h5 id="message-binhluan" class="text-warning"></h5>
+    <div class="status-upload">
+        <form>
+            <div class="form-group">
+                <label style="padding-left:25px"><a href="#"><b>Cửa hàng @ViewBag.StoreName</b></a></label>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group fr-group">
+                    <label class="col-md-2 text-center">Tiêu đề:</label>
+                    <div class="col-md-10">
+                        <input class="form-control" placeholder="Hãy nhập ví dụ như:'Cửa hàng rất tốt'" id="comment" />
+                    </div>
+
+                </div>
+                <div class="form-group fr-group">
+                    <label for="comment" class="col-md-2 text-center">Bình luận:</label>
+                    <div class="col-md-10">
+                        <textarea class="form-control" rows="3" id="comment"></textarea>
+                    </div>
+                </div>
+                <div class="form-group fr-group">
+                    <label class="col-md-2 text-center">Đánh giá:</label>
+                    <div class="col-md-10">
+                        <input id="input-21e" value="0" type="text" class="rating" data-min=0 data-max=5 data-step=0.5 data-size="xs"
+                               title="">
+                    </div>
+                </div>
+                <div class="row list-picture">
+                    <div class="scroll">
+                        <ul id="listpicture"></ul>
+                    </div>
+                </div>
+
+                <ul>
+                    <li><a title="" data-toggle="tooltip" data-placement="bottom" data-original-title="Audio"><i class="fa fa-music"></i></a></li>
+                    <li><a title="" data-toggle="tooltip" data-placement="bottom" data-original-title="Video"><i class="fa fa-video-camera"></i></a></li>
+                    <li><a title="" data-toggle="tooltip" data-placement="bottom" data-original-title="Sound Record"><i class="fa fa-microphone"></i></a></li>
+                    <li>
+                        <a title="" onclick="performClick('theFile')" data-placement="bottom" data-original-title="Picture"><i class="fa fa-picture-o"></i></a>
+                        <input type="file" id="theFile" class="hidden" />
+                    </li>
+                </ul>
+                <button onclick="submitBinhLuan()" type="button" class="btn green">Đăng</button>
+                <button type="submit" class="btn btn-success green hidden">submit form</button>
+            </div>
+        </form>
+    </div><!-- Status Upload  -->
+</div><!-- Widget Area -->
+<div id="BaseUrl"
+     data-storeid="@ViewBag.StoreID"
+     data-baseurl="@Context.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")"></div>
+<script src="~/Scripts/comment.js"></script>
+<script src="~/Scripts/star-rating.js"></script>
+<script>
+    $(document).ready(function () {
+        var $inp = $('.rating-input');
+
+        $('#btn-rating-input').on('click', function () {
+            $inp.rating('refresh', {
+                showClear: true,
+                disabled: !$inp.attr('disabled')
+            });
+        });
+
+        $('.btn-danger').on('click', function () {
+            $("#kartik").rating('destroy');
+        });
+
+        $('.btn-success').on('click', function () {
+            $("#kartik").rating('create');
+        });
+
+        $('.rating-input').on('rating.change', function () {
+            console.log($('.rating-input').val())
+        });
+    });
+</script>

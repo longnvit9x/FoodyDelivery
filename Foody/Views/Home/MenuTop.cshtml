@@ -1,0 +1,97 @@
+﻿@using Foody.Models;
+@model List<Store>
+<link href="~/Content/menutop.css" rel="stylesheet" />
+<header id="menu-header" class="menu-header clearfix">
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")" style="font-weight: bold; font-size:30px">Fooddy</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                @using (Html.BeginForm("TimKiem", "Home", FormMethod.Post))
+                {
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            @Html.DropDownList("cbxAddress", new List<SelectListItem>
+                            {
+                                new SelectListItem {Text = "Hà Nội", Value = "Hà Nội"},
+                                new SelectListItem {Text = "Hồ Chí Minh", Value = "Hồ Chí Minh"},
+                                new SelectListItem {Text = "Huế", Value = "Huế"},
+                                new SelectListItem {Text = "Nam Định", Value = "Nam Định"}
+                            }, new { @class = "combobox-menu" })
+                        </li>
+                        <li class="dropdown">
+                            @Html.DropDownList("cbxStoreType", new List<SelectListItem>
+                            {
+                                new SelectListItem {Text = "Cơm trưa", Value = "Cơm trưa"},
+                                new SelectListItem {Text = "Đồ ăn", Value = "Đồ ăn"},
+                                new SelectListItem {Text = "Thức uống", Value = "Thức uống"},
+                                new SelectListItem {Text = "Tráng miệng", Value = "Tráng miệng"},
+                                new SelectListItem {Text = "Nhà hàng", Value = "Nhà Hàng"}
+                            }, new { @class = "combobox-menu" })
+                        </li>
+                        <li>@Html.TextBox("txtStoreName", "", htmlAttributes: new { @class = "input", @placeholder = "Nhập vào từ khóa cần tìm ..." })</li>
+                        <li><button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button></li>
+                    </ul>
+                }
+                @{if (ViewBag.FullName != null)
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <img src="@ViewBag.Avatar" height="35" class="img img-circle image-login dropdown-toggle" data-toggle="dropdown" /><b class="caret"></b>
+
+                                <ul id="account-login" class="dropdown-menu">
+                                    <li>Quản lý địa điểm</li>
+                                    @foreach (var item in Model)
+                                    {
+                                        <li><a href="@Url.Action("XemChiTiet", "Store", new { @StoreID=item.StoreID })">@item.StoreName</a></li>
+                                    }
+                                    <li><i class="fa fa-plus" aria-hidden="true"><a href="@Url.Action("ThemStore", "Store")">Thêm địa điểm</a></i></li>
+                                    <li><i class="fa fa-bars" aria-hidden="true"><a href="@Url.Action("QuanLyStore", "Store", new { page=1})">Danh sách địa điểm</a></i></li>
+                                    <li class="divider"></li>
+                                    <li><a href="@Url.Action("AccountDetail", "Account")">Thông tin tài khoản</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="http://www.jquery2dotnet.com">One more separated link</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i> <span class="badge">@ViewBag.PostNew.Count</span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    @if (ViewBag.PostNew.Count == 0)
+                                    {
+                                    <li class="dropdown-header">No message</li>}
+                                    @foreach (var post in ViewBag.PostNew)
+                                    {
+                                        <li class="dropdown-header"><h5>@post.Customer.FullName</h5> @post.Title</li>
+                                    }
+                                </ul>
+                            </li>
+                            <li>@Html.Action("GioHangPartial", "GioHang") </li>
+                            <li><a href="@Url.Action("Logout","Account")">Đăng Xuất</a> </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="@Url.Action("Login","Account")">Đăng Nhập</a></li>
+                        </ul>
+                    }
+
+                }
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+</header>
+
+<script>
+    $('#account-login li').click(function () {
+        $('#account-login li').removeClass('selected');
+        $(this).addClass('selected');
+    });
+</script>

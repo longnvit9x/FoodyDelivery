@@ -1,0 +1,57 @@
+﻿@model Foody.Models.StoreSale
+
+@{
+    ViewBag.Title = "SuaSale";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/adminstore.css" rel="stylesheet" />
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = ViewBag.StoreID })
+}
+<div class="container-left">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4 class="text-center">Sửa sale</h4>
+            <h5 class="text-warning">@ViewBag.Message</h5>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.StoreSaleID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Sale, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Sale, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Sale, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartSale, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StartSale, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StartSale, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StopSale, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StopSale, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StopSale, "", new { @class = "text-danger" })
+                </div>
+            </div>
+                        
+            <div class="row form-group">
+                <div class="col-sm-6 text-right">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <a href="@Url.Action("QuanLySale", "Store", new { StoreID = ViewBag.StoreID,page=1 })" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Foody.Models.InvoiceDetail>
+
+@{
+    ViewBag.Title = "InvoiceDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = ViewBag.StoreID })
+}
+<h3 class="text-center">Chi tiết hóa đơn</h3>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Food.FoodName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberFood)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PriceSize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PriceType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Food.FoodName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Invoice.CustomerName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Food.FoodName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberFood)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Size)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PriceSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PriceType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Food.FoodName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Invoice.CustomerName)
+        </td>
+    </tr>
+}
+
+</table>

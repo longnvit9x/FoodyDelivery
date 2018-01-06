@@ -1,0 +1,58 @@
+﻿@using Foody.Models
+@model PagedList.IPagedList<Category>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "QuanLyDanhMucMonAn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = ViewBag.StoreID })
+}
+<h4 class="text-center">Quản lý Danh mục món ăn</h4>
+<br />
+<p>
+    @Html.ActionLink("Thêm danh mục", "ThemDanhMuc", new { StoreID = ViewBag.StoreID })
+</p>
+<h5 class="text-warning"> @Session["Message"]</h5>
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().CategoryID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Store.StoreName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Store.StoreName)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "SuaDanhMuc", new { CategoryID = item.CategoryID, StoreID = ViewBag.StoreID }) |
+                @Html.ActionLink("Xóa", "XoaDanhMuc", new { CategoryID = item.CategoryID, StoreID = ViewBag.StoreID })
+            </td>
+        </tr>
+    }
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="4">
+                Không có dữ liệu
+            </td>
+        </tr>
+    }
+</table>
+@Html.PagedListPager(Model, page => Url.Action("QuanLyDanhMucMonAn", new { StoreID = ViewBag.StoreID, page }))

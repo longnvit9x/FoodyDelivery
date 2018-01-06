@@ -1,0 +1,51 @@
+﻿@using Foody.Models
+@model PagedList.IPagedList<Store>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "TimKiem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section menuleft{
+    @Html.Action("MenuLeft", "Home")
+}
+<link href="~/Content/Index.css" rel="stylesheet" />
+@section menusearch{
+    <div id="menu-seach" class="menusearch">
+        <ul class="nav navbar-nav">
+            <li><a href="../navbar/"> Mới nhất</a></li>
+            <li><a href="../navbar/"> Gần tôi</a></li>
+        </ul>
+    </div>
+}
+<div class="isotope portfolio-items row">
+    <h5 class="text-warning" style="margin-left:15px">@ViewBag.ThongBao</h5>
+    @{int i = 0; }
+    @foreach (var item in Model)
+    {
+        i++;
+        <div class="element-item grid col-sm-3">
+            <div class="effect-zoe">
+                <img class="img-responsive" alt="Portfolio" src="@item.StoreBanner" />
+                <figcaption>
+                    <p class="icon-links">
+                        <a href="@Url.Action("XemChiTiet", "Store", new { @StoreID=item.StoreID })"> Đặt món</a>
+                    </p>
+                </figcaption>
+            </div>
+            <div class="StoreDetail">
+                <br />
+                <h5 class="store-name"> @item.StoreName</h5>
+                <p class="list-inline">@item.Address</p>
+            </div>
+        </div>
+        if (i % 4 == 0)
+        {
+            <div style="clear:both"></div>
+        }
+    }
+    <div style="clear:both"></div>
+    @Html.PagedListPager(Model, page => Url.Action("TimKiem", new { page = page, @sStoreName = ViewBag.StoreName, @sAddress = ViewBag.Address, @sStoreType = ViewBag.StoreType }))
+</div>
+@Html.Action("CuaHangKhuyenMai", "Home")
+<br />
+@Html.Action("CuaHangDuocDanhGiaCao", "Home")

@@ -1,0 +1,97 @@
+﻿
+@using Foody.Models
+@model PagedList.IPagedList<Store>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "KetQuaMenuLeft";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section menuleft{
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <span class="glyphicon glyphicon-folder-close">
+                        </span>   Giao hàng tận nơi
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="@Url.Action("TimKiem", new {storeType="Cơm trưa"})">Cơm trưa</a></li>
+                    <li class="list-group-item"><a href="@Url.Action("TimKiem", new {storeType="Đồ ăn"})">Đồ ăn</a></li>
+                    <li class="list-group-item"><a href="@Url.Action("TimKiem", new {storeType="Thức uống"})">Thức uống</a></li>
+                    <li class="list-group-item"><a href="@Url.Action("TimKiem", new {storeType="Tráng miệng"})">Tráng miệng</a></li>
+                    <li class="list-group-item"><a href="@Url.Action("TimKiem", new {storeType="NHÀ HÀNG"})">Nhà hàng</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    div.menusearch {
+        height: 50px;
+        background: #ddd;
+        z-index: 2;
+        width: 100%;
+    }
+
+        div.menusearch ul li a {
+            padding: 10px;
+        }
+</style>
+
+@section menusearch{
+    <div id="menu-seach" class="menusearch">
+        <ul class="nav navbar-nav">
+            <li><a href="../navbar/"> Mới nhất</a></li>
+            <li><a href="../navbar/"> Gần tôi</a></li>
+        </ul>
+    </div>
+}
+
+<style type="text/css">
+    div.element-item {
+        margin-right: 10px;
+    }
+
+    div.StoreDetail {
+        margin-top: 10px;
+        padding: 10px;
+        background: #ffffff;
+    }
+
+        div.StoreDetail h1 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+</style>
+<div class="isotope portfolio-items">
+    @{int i = 0; }
+    @foreach (var item in Model)
+    {
+        i++;
+        <div class="element-item grid">
+            <div class="effect-zoe">
+                <img class="img-responsive" alt="Portfolio" src="@item.StoreBanner" />
+                <figcaption>
+                    <p class="icon-links">
+                        <a href="@Url.Action("XemChiTiet", "Store", new { @StoreID=item.StoreID })"> Đặt món</a>
+                    </p>
+                </figcaption>
+            </div>
+            <div class="StoreDetail">
+                <h1> @item.StoreName</h1>
+                <p>@item.Address</p>
+            </div>
+        </div>
+        if (i % 3 == 0)
+        {
+            <div style="clear:both"></div>
+        }
+    }
+    <div style="clear:both"></div>
+    @Html.PagedListPager(Model, page => Url.Action("TimKiem", new { page = page, @sStoreType = ViewBag.StoreType }))
+</div>
+

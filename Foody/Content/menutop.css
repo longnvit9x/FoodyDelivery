@@ -1,0 +1,41 @@
+﻿.menu-header {
+     background: #ffffff;
+    border: 1px solid #eee;
+}
+
+.combobox-menu {
+    margin-top: 5px;
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.image-login{
+ margin-top:5px;
+}
+
+.text-bell {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+div ul li {
+    margin: 5px 5px 0 5px;
+}
+
+    div ul li .input {
+        margin: 5px 5px 0 5px;
+        background: rgba(0, 0, 0, 0);
+        border: 1px solid #ccc;
+        padding: 7px 16px;
+        color: black;
+        border-radius: 4px;
+        height: 35px;
+    }
+
+    div ul li button {
+        margin-top: 5px;
+        height: 35px;
+        width: 35px;
+        border: 1px solid #ccc;
+    }

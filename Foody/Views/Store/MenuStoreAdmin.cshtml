@@ -1,0 +1,39 @@
+﻿<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <span class="glyphicon glyphicon-folder-close">
+                    </span>  Quản lý thông tin cửa hàng
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="@Url.Action("XemChiTiet", "Store", new { StoreID = ViewBag.StoreID })">Cửa hàng</a></li>
+                <li class="list-group-item"><a href="@Url.Action("ThongTin", "Store", new { StoreID = ViewBag.StoreID })">Thông tin cửa hàng</a></li>
+                <li class="list-group-item"><a href="@Url.Action("QuanLySale", "Store", new { StoreID = ViewBag.StoreID,page=1})">Sale</a></li>
+                <li class="list-group-item"><a href="@Url.Action("QuanLyHoaDon","Invoice", new {StoreID=ViewBag.StoreID,page=1})">Đơn đặt hàng</a></li>
+                <li class="list-group-item"><a href="@Url.Action("QuanLyKhachHang","Store", new {StoreID=ViewBag.StoreID,page=1})">Khách hàng</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    <span class="glyphicon glyphicon-folder-close">
+                    </span>  Quản lý Món ăn
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="@Url.Action("QuanLyDanhMucMonAn", "Category", new { StoreID = ViewBag.StoreID,page=1 })">Danh mục món ăn</a></li>
+                <li class="list-group-item"><a href="@Url.Action("QuanLyMonAn", "Food", new { StoreID = ViewBag.StoreID,page=1 })">Món ăn</a></li>
+                <li class="list-group-item"><a href="@Url.Action("QuanLySizeMonAn", "Food", new { StoreID = ViewBag.StoreID,page=1 })">Size món ăn</a></li>
+                <li class="list-group-item"><a href="@Url.Action("QuanLyTypeMonAn", "Food", new { StoreID = ViewBag.StoreID,page=1 })">Vị món ăn</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

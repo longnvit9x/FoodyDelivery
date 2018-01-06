@@ -1,0 +1,61 @@
+﻿.ratings-boxes {
+    width:100%;
+    float: right;
+    background: none repeat 0 0 #fff;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.summary {
+    padding: 20px 0 15px;
+    font-size: 16px;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: #f6f6f6 1px solid;
+}
+
+.ratings-numbers {
+    padding: 10px 40px;
+    clear: both;
+    font-size: 14px;
+}
+
+.ratings-numbers {
+    padding: 10px 40px;
+    clear: both;
+    font-size: 14px;
+}
+
+.ratings-numbers .rating-levels .exellent {
+    color: #8E44AD;
+    font-size: 16px;
+    width: 60px;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.ratings-numbers .rating-levels .good {
+    color: #03ae03;
+    font-size: 16px;
+    width: 60px;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}
+.ratings-numbers .rating-levels .average {
+    color: #333;
+    font-size: 16px;
+    width: 60px;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}
+.ratings-numbers .rating-levels .bad {
+    color: #c00;
+    font-size: 16px;
+    width: 60px;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}

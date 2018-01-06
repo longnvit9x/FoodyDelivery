@@ -1,0 +1,140 @@
+﻿@model Foody.Models.Store
+
+@{
+    ViewBag.Title = "ThongTin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = Model.StoreID })
+}
+<link href="~/Content/adminstore.css" rel="stylesheet" />
+<div class="container-left">
+    @using (Html.BeginForm("ThongTin", "Store", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4 class="text-center">Thông tin</h4>
+            <h5 class="text-warning">@ViewBag.Message</h5>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.StoreID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StoreName, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StoreName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StoreName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpenDoor, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.OpenDoor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.OpenDoor, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CloserDoor, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CloserDoor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CloserDoor, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ServiceCharge, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ServiceCharge, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ServiceCharge, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ShippingFee, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ShippingFee, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingFee, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Manner, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Manner, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Manner, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConditionShip, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ConditionShip, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ConditionShip, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Website, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StoreType, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StoreType, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StoreType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StoreBanner,"URL ảnh hiển thị", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StoreBanner, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StoreBanner, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StoreBanner, "Ảnh hiên thị", new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    <input name="image" type="file" />
+                    @Html.ValidationMessageFor(model => model.StoreBanner)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-6 text-right">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <a href="@Url.Action("XemChiTiet", "Store", new { StoreID = @ViewBag.StoreID })" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

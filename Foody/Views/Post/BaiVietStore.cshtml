@@ -1,0 +1,216 @@
+﻿@model IEnumerable<Foody.Models.Post>
+@Html.Action("BinhLuan", "Post", new { StoreID = ViewBag.StoreID })
+
+<link href="~/Content/baiviet.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-8">
+        @foreach (var item in Model)
+        {
+            <div class="box update">
+                <div class="box-header">
+                    <h3>
+                        <a href=""><img src="@item.Customer.FileData.URL" alt="" />@item.Customer.FullName</a>
+                        <span>@item.PostTime<i class="fa fa-globe"></i></span>
+                    </h3>
+                    <div class="review-points ng-scope green">
+                        <span class="ng-binding">@item.Rating.0</span>
+                    </div>
+                    @*<span><i class="ion-more">@item.Rating</i></span>*@
+                    <div class="window"><span></span></div>
+                </div>
+                <div class="box-content">
+                    <div class="content">
+                        <a href="#"><b>@item.Store.StoreName</b></a>
+                        <p>
+                            @item.Content
+                        </p>
+                        <div class="col-lg-12 image-content">
+                            @foreach (var image in @item.PostImages)
+                            {
+                                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                                    <a class="thumbnail img-thumbnails" href="#" data-image-id="" data-toggle="modal" data-title="" data-caption="" data-image="@image.FileData.URL" data-target="#image-gallery">
+                                        <img class="img-responsive" src="@image.FileData.URL" alt="Another alt text">
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title" id="image-gallery-title"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img id="image-gallery-image" class="img-responsive" src="">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-primary" id="show-previous-image">Previous</button>
+                                        </div>
+                                        <div class="col-md-8 text-justify" id="image-gallery-caption">
+                                            This text will be overwritten by jQuery
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" id="show-next-image" class="btn btn-default">Next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @{ var isLike = 0;}
+                @foreach (var like in item.PostLikes)
+                {
+                    if (like.PostID == item.PostID && like.CustomerID == ViewBag.CustomerID)
+                    {
+                        isLike = 1;
+                        break;
+                    }
+                }
+                <div class="box-buttons">
+                    <div class="row">
+                        <button  onclick="btnLike(@item.PostID)">
+                            @if (isLike==1)
+                            { <span id="iconLike_@item.PostID" class="fa fa-thumbs-up">   Thích</span> }
+                            else
+                            {<span id="iconLike_@item.PostID" class="fa fa-thumbs-o-up">   Thích</span>  }
+                        </button>
+                        <button onclick="btnBinhluan(@item.PostID)"><span class="fa fa-comment-o">  Bình luận</span></button>
+                    </div>
+                </div>
+                    <div class="box-likes">
+                            <div class="row">
+                                <span><a id="numberLike_@item.PostID" href="#">@item.PostLikes.Count</a></span>
+                                <span>lượt thích</span>
+                            </div>
+                            <div class="row">
+                                <span id="numberComment_@item.PostID">@item.PostComments.Count</span>
+                                <span>bình luận</span>
+                            </div>
+                    </div>
+
+                @if (item.PostComments.Count > 5)
+                {
+                    <div class="box-click"><span><i class="ion-chatbox-working"></i> Xem các bình luân trước</span></div>
+                }
+                @{ int j = 1;}
+
+                <div id="listComment_@item.PostID" class="box-comments">
+                    @foreach (var comment in item.PostComments)
+                    {
+                        <div class="comment">
+                            <img src="@comment.Customer.FileData.URL" alt="" />
+                            <div class="content">
+                               
+                                    <h3><a href="">@comment.Customer.FullName</a></h3>
+                                <p>
+                                    @comment.CommentContent
+                                </p>
+                                <span>
+                                    <time> @comment.CommentTime </time>
+                                    <a href="#">@comment.CommentLike thích</a>
+                                </span>
+                            </div>
+                        </div>
+                        j++;
+                        if (j >= 5) { break; }
+                    }
+                </div>
+
+                @if (ViewBag.CustomerID != null)
+                {
+                    <div class="box-new-comment">
+                        <img src="@ViewBag.Avatar" alt="" />
+                        <div class="content">
+                            <div class="row">
+                                <textarea id="txtComment_@item.PostID" onkeypress="submitComment(@item.PostID)" rows="1" placeholder="Viết bình luận..."></textarea>
+                            </div>
+                            <div class="row">
+                                <span class="ion-android-attach"></span>
+                                <span class="fa fa-smile-o"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="box-new-comment">
+                        <img alt="" />
+                        <div class="content">
+                            <div class="row">
+                                <textarea rows="1" placeholder="Hãy đăng nhập để có thể bình luận" class="disabled"></textarea>
+                            </div>
+                            <div class="row">
+                                <span class="ion-android-attach"></span>
+                                <span class="fa fa-smile-o"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+                    }
+    </div>
+    <div class="col-md-4" style="margin-right:0">
+        @Html.Action("ThongTinDanhGia", "Post", new { StoreID = ViewBag.StoreID })
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        loadGallery(true, 'a.thumbnail');
+
+        //This function disables buttons when needed
+        function disableButtons(counter_max, counter_current) {
+            $('#show-previous-image, #show-next-image').show();
+            if (counter_max == counter_current) {
+                $('#show-next-image').hide();
+            } else if (counter_current == 1) {
+                $('#show-previous-image').hide();
+            }
+        }
+
+
+        function loadGallery(setIDs, setClickAttr) {
+            var current_image,
+                selector,
+                counter = 0;
+
+            $('#show-next-image, #show-previous-image').click(function () {
+                if ($(this).attr('id') == 'show-previous-image') {
+                    current_image--;
+                } else {
+                    current_image++;
+                }
+
+                selector = $('[data-image-id="' + current_image + '"]');
+                updateGallery(selector);
+            });
+
+            function updateGallery(selector) {
+                var $sel = selector;
+                current_image = $sel.data('image-id');
+                $('#image-gallery-caption').text($sel.data('caption'));
+                $('#image-gallery-title').text($sel.data('title'));
+                $('#image-gallery-image').attr('src', $sel.data('image'));
+                disableButtons(counter, $sel.data('image-id'));
+            }
+
+            if (setIDs == true) {
+                $('[data-image-id]').each(function () {
+                    counter++;
+                    $(this).attr('data-image-id', counter);
+                });
+            }
+            $(setClickAttr).on('click', function () {
+                updateGallery($(this));
+            });
+        }
+    });
+</script>
+<script src="~/Scripts/baiviet.js"></script>

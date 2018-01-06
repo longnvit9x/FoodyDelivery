@@ -1,0 +1,83 @@
+﻿
+<link href="~/Content/nivoslider.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/animate.css/3.5.1/animate.min.css">
+<div id="first-slider">
+    <div id="carousel-example-generic" class="carousel slide carousel-fade">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+        </ol>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <!-- Item 1 -->
+            <div class="item active slide1" onclick="location.href='@Url.Action("XemChiTiet", "Store", new { @StoreID = @Model[0].StoreID })'" style="background-image:url(@Model[0].StoreBanner)">
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-3 text-right">
+                           <img style="max-width: 200px; height:100%" data-animation="animated zoomInLeft" src="">
+                        </div>
+                        <div class="col-md-9 text-left">
+                            <h3 data-animation="animated bounceInDown">@Model[0].StoreName</h3>
+                            <h4 data-animation="animated bounceInUp">@Model[0].Address</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="item slide2" onclick="location.href='@Url.Action("XemChiTiet", "Store", new { @StoreID = @Model[1].StoreID })'" style="background-image:url(@Model[1].StoreBanner)">
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-7 text-left">
+                            <h3 data-animation="animated bounceInDown">@Model[1].StoreName</h3>
+                            <h4 data-animation="animated bounceInUp">@Model[1].Address</h4>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <img style="max-width: 200px; height:100%" data-animation="animated zoomInLeft" src="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Item 3 -->
+            <div class="item slide3" onclick="location.href='@Url.Action("XemChiTiet", "Store", new { @StoreID = @Model[2].StoreID })'" style="background-image:url(@Model[2].StoreBanner)">
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-7 text-left">
+                            <h3 data-animation="animated bounceInDown">@Model[2].StoreName</h3>
+                            <h4 data-animation="animated bounceInUp">@Model[2].Address</h4>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <img style="max-width: 200px; height:100%" data-animation="animated zoomInLeft" src="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Item 4 -->
+            <div class="item slide4" onclick="location.href='@Url.Action("XemChiTiet", "Store", new { @StoreID = @Model[3].StoreID })'" style="background-image:url(@Model[3].StoreBanner)">
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-7 text-left">
+                            <h3 data-animation="animated bounceInDown">@Model[3].StoreName</h3>
+                            <h4 data-animation="animated bounceInUp">@Model[3].Address</h4>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <img style="max-width: 200px; height:100%" data-animation="animated zoomInLeft" src="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Item 4 -->
+
+        </div>
+        <!-- End Wrapper for slides-->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <i class="fa fa-angle-right"></i><span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,202 @@
+﻿.store {
+    margin: auto;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ffffff;
+}
+
+div.img-storebanner img {
+    height: 275px;
+    width:100%;
+}
+
+.store-detail {
+    margin-left: 30px;
+    height: 275px;
+}
+
+.delevery {
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+
+.stt-store {
+    color: #3ecd1b;
+}
+
+.light-grey {
+    color: #a1a1a1;
+}
+
+.btn-adding {
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    font-size: 10px;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    background-color: #cf2127;
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer !important;
+    outline: 0;
+}
+
+.txt-blue {
+    color: #206b9b;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.deli-box-menu-detail {
+    margin-bottom: 10px;
+    border-bottom: #f5f5f5 1px solid;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.deli-name-food-detail {
+    /*width: 480px;*/
+    margin-left: 15px;
+    line-height: 1.8em;
+}
+
+.deli-all-info-restaurant {
+    background-color: #fff;
+    /*width: 600px;*/
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.img-food-detail {
+    width: 60px;
+}
+
+.deli-container a {
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.deli-dish {
+    margin: 20px;
+}
+
+.deli-desc {
+    display: block;
+    padding-top: 5px;
+    line-height: 1.6em;
+    padding-right: 150px;
+}
+
+.deli-rating-food {
+    position: relative;
+}
+
+.deli-more-info {
+    position: absolute;
+    top: 21px;
+    right: 0;
+}
+
+.adding-food-cart {
+    float: right;
+}
+
+.product-price p {
+    margin: 0;
+}
+
+.deli-container .font16 {
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.unit {
+    position: relative;
+    top: 0;
+    font-size: 12px;
+    right: 0;
+}
+
+.product-price {
+    float: right;
+}
+
+.deli-title-kind-food {
+    text-transform: uppercase;
+    color: #666;
+    font-size: 14px;
+    padding: 5px 0 0;
+    margin-bottom: 20px;
+}
+
+.deli-more-info {
+    position: absolute;
+    top: 21px;
+    right: 0;
+}
+
+.microsite {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    color: #333;
+    overflow: hidden;
+}
+
+    .microsite .micro-top-container {
+        width: 100%;
+        float: left;
+        margin: 0 auto;
+        z-index: 3000;
+    }
+
+.micro-top-container .content {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.deli-container-bill {
+
+    /*width: 320px;
+    margin-left: 40px;*/
+    position: relative;
+    /*z-index: 10;*/
+    height: 250px;
+}
+
+    .deli-container-bill > div.bill {
+        background: #fff;
+        padding: 15px;
+        /*position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;*/
+        height: auto;
+    }
+
+    .deli-container-bill .row-bill {
+        border-bottom: 1px solid #f5f5f5;
+        padding: 7px 10px;
+        overflow: hidden;
+    }
+
+/*.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: #fafafa;
+    padding: 0;
+    max-height: 70%;
+    width: 55%;
+    margin: auto;
+    overflow-y: auto;
+    border-radius: 2px;
+    will-change: top,opacity;
+}*/

@@ -1,0 +1,100 @@
+﻿@using Foody.Models
+@model List<Food>
+
+<div class="row">
+    <div class="col-md-7 deli-container ng-scope">
+        @*thuc don*@
+        <div class="deli-all-info-restaurant" style="padding-top:5px">
+            <div class="deli-dish" id="deligroupdish-14731">
+                @*<p class="deli-title-kind-food">
+                    <span>Thực đơn</span>
+                </p>*@
+                @{int i = 0; }
+                @foreach (var item in Model)
+            {
+                i++;
+
+                    <div class="deli-box-menu-detail clearfix">
+                        <div class="img-food-detail pull-left">
+                            <a href="#cb_0" class="inline cboxElement">
+                                <img src="@item.FoodImage" alt="@item.FoodName" width="60" height="60" onclick="">
+                            </a>
+                        </div>
+                        <div class="deli-name-food-detail pull-left">
+                            <a class="deli-title-name-food" href="javascript:void(0);" ng-click="addToCartFromMenu(164654, currentDishPrice, currentDishPrice, 1, $event)">
+                                <h3 style="font-size: 16px; margin: 0px; padding: 0px; line-height: 1.3em; font-weight: bold;">
+                                    @item.FoodName
+                                </h3>
+                            </a>
+                            <span class="deli-desc"></span>
+                            <div class="deli-rating-food">
+                            </div>
+                            <p style="margin: 0; color: #a1a1a1; font-size: 11px;">
+                                Đã được đặt <span style="color: #464646; font-weight: bold;">1261</span> lần
+                            </p>
+                        </div>
+                        <div class="deli-more-info">
+                            <div class="adding-food-cart" ng-show="!IsClosed">
+                                @using (Html.BeginForm("ThemGioHang", "GioHang", new { @FoodID = item.FoodID, @strURL = Request.Url.ToString() }))
+                                {
+                                    <input type="submit" id="btnGioHang" class="btn-adding" value="+ ">
+                                }
+                                @*<span class="btn-adding" ng-click="addToCartFromMenu(164654, currentDishPrice, currentDishPrice, 1, $event)">+</span>*@
+                            </div>
+                            <div class="product-price">
+                                <p class="current-price">
+                                    <span class="txt-blue font16 bold">
+                                        @item.Price
+                                    </span>
+                                    <span class="unit">đ</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @*end thuc don*@
+    </div>
+    <div class="col-md-5 deli-container-bill">
+        <div class="bill">
+            <div class="row-bill deli-clearfix">
+                <a href="javascript:void(0);" ng-click="" class="cart-stats">
+                    <span id="cart-qty" class="bold font12 ng-binding" ng-bind="totalQty">0</span>
+                    <span class="font12">phần</span>
+                </a>
+                <a href="javascript:void(0)" class="btn-reset" ng-click="clearCart()">Reset</a>
+            </div>
+            <div style="max-height: 300px; overflow-y: auto;">
+                <!-- ngRepeat: item in OrderDish -->
+            </div><div>
+                <div class="row-bill-grey deli-clearfix">
+                    <span>Cộng</span>
+                    <span class="bold pull-right ng-binding">0<span class="unit">đ</span></span>
+                </div>
+                <div class="row-bill-grey clearfix">
+                    <span>Phí vận chuyển (Est.)</span>
+                    <span class="pull-right">
+                        <span class="ng-binding">5,000đ/km</span>
+                    </span>
+                </div>
+                <div class="row-bill-grey clearfix ng-hide" ng-show="servicePercent > 0">
+                    <span>Phục vụ: <span class="bold ng-binding">0%</span></span>
+                    <span class="pull-right ng-binding">0<span class="unit">đ</span></span>
+                </div>
+                <div class="row-bill-grey clearfix">
+                    <span class="deli-code pull-left" style="width: 96%;">Nhập mã khuyến mãi ở bước hoàn tất </span>
+                </div>
+                <div class="row-bill-grey clearfix">
+                    <span class="font16 bold">Tạm tính</span>
+                    <span class="pull-right font16 txt-blue bold" style="color: #085ffb;" ng-hide="OrderValue.value > 0">0<span class="unit">đ</span></span>
+                </div>
+                <a class="btn-book-first"
+                   href="@Url.Action("GioHang", "GioHang")">
+                    <i class="fa fa-check-circle"></i>
+                    Đặt Trước
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

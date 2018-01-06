@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <link href="~/Content/Index.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+</head>
+<body>
+    @Html.Partial("~/Views/Home/_QuangCao.cshtml")
+    @Html.Action("MenuTop", "Home")
+    <br />
+    @RenderSection("header", false)
+    @RenderSection("slide", false)
+    <div class="body">
+        <div class="row">
+            <div class="col-sm-3 col-md-4 col-lg-3">
+                <div id="menu-left">
+                    @RenderSection("menuleft", false)
+                </div>
+            </div>
+            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                @RenderSection("menusearch", false)
+                <div>
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        @* footer *@
+        <div style="clear:both"></div>
+        @Html.Partial("~/Views/Home/_Footer.cshtml")
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/config.js"></script>
+    <script language="javascript" src="~/Scripts/Home.js"></script>
+    <script src="~/Scripts/jgSlider.js"></script>
+    @RenderSection("scripts", required: false)
+    @RenderSection("jsFooter", required: false)
+</body>
+</html>
