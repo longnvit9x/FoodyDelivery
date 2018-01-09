@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Foody.Models;
+using Foody.Models.Entity;
 using PagedList;
 using System.IO;
 
@@ -26,7 +27,6 @@ namespace Foody.Controllers
         // GET: Store
         public ActionResult XemChiTiet(Guid StoreID)
         {
-
             Store store = db.Stores.SingleOrDefault(n => n.StoreID == StoreID);
             if (store == null)
             {
@@ -38,6 +38,10 @@ namespace Foody.Controllers
             {
                 if (Session["UserName"] != null)
                 {
+                    if (store.Status == 0)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                     string user = Session["UserName"].ToString();
                     Customer cus = db.Customers.SingleOrDefault(n => n.UserName == user);
                     if (store.CustomerID.Equals(cus.CustomerID))
@@ -53,12 +57,21 @@ namespace Foody.Controllers
 
         public ActionResult ThongTin(Guid StoreID)
         {
+
             Store store = db.Stores.SingleOrDefault(n => n.StoreID == StoreID);
             if (store == null)
             {
                 //Trả về trang báo lỗi 
                 Response.StatusCode = 404;
                 return null;
+            }
+            if (Session["UserName"] != null)
+            {
+                Customer cus = (Customer)Session["TaiKhoan"];
+                if (!store.CustomerID.Equals(cus.CustomerID))
+                {
+                    return RedirectToAction("XemChiTiet", new { StoreID = StoreID });
+                }
             }
             ViewBag.StoreID = StoreID;
             return View(store);
@@ -130,7 +143,20 @@ namespace Foody.Controllers
 
         public ActionResult StoreDetail(Guid StoreID)
         {
+            int storeAdmin = 0;
             var foods = db.Foods.Where(n => n.StoreID == StoreID).ToList();
+            if (Session["UserName"] != null)
+            {
+                Store store = db.Stores.SingleOrDefault(n => n.StoreID == StoreID);
+                string user = Session["UserName"].ToString();
+                Customer cus = db.Customers.SingleOrDefault(n => n.UserName == user);
+                if (store != null && store.CustomerID.Equals(cus.CustomerID))
+                {
+                    storeAdmin = 1;
+                }
+            }
+            ViewBag.StoreAdmin = storeAdmin;
+            ViewBag.StoreID = StoreID;
             return PartialView(foods);
         }
 
@@ -146,13 +172,13 @@ namespace Foody.Controllers
             store.CustomerID = Guid.Parse(Session["CustomerID"].ToString());
             store.Rating = 0;
             store.Evaluation = 0;
+            store.Status = 0;
             if (image != null)
             {
                 FileData fileData = new FileData();
                 //attach the uploaded image to the object before saving to Database
                 fileData.FileType = image.ContentType;
                 image.InputStream.Read(new byte[image.ContentLength], 0, image.ContentLength);
-
                 //Save image to file
                 var filename = image.FileName;
                 var filePathOriginal = Server.MapPath("/Data/Originals");
@@ -185,7 +211,7 @@ namespace Foody.Controllers
                 Session["Message"] = null;
             }
             var listStoreSale = db.StoreSales.Where(n => n.StoreID == stID).OrderBy(x => x.StopSale).ToPagedList(page, pageSize);
-            if (listStoreSale == null )
+            if (listStoreSale == null)
             {
                 //Trả về trang báo lỗi 
                 Response.StatusCode = 404;
@@ -275,7 +301,7 @@ namespace Foody.Controllers
                 return null;
             }
             DateTime dateNow = DateTime.Today;
-            if(storeSale.StartSale<= dateNow && storeSale.StopSale>= dateNow)
+            if (storeSale.StartSale <= dateNow && storeSale.StopSale >= dateNow)
             {
                 Session["Message"] = "Đang trong thời gian sale không thể xóa";
                 ViewBag.StoreID = StoreID;
@@ -294,7 +320,7 @@ namespace Foody.Controllers
         {
             if (Session["UserName"] != null)
             {
-                Customer cus =(Customer) Session["TaiKhoan"];
+                Customer cus = (Customer)Session["TaiKhoan"];
                 if (method == null)
                 {
                     Session["Message"] = null;
@@ -309,6 +335,48 @@ namespace Foody.Controllers
                 return View(listStore);
             }
             return null;
+        }
+
+
+        //ajax
+        [HttpGet]
+        public JsonResult getFoodDetail(string FoodID)
+        {
+            var fdID = Guid.Parse(FoodID);
+            var food = db.Foods.Where(n => n.FoodID == fdID).SingleOrDefault();
+            List <FoodSizeEntity> foodSizes= new List<FoodSizeEntity>();
+            List<FoodTypeEntity> foodTypes = new List<FoodTypeEntity>();
+            foreach ( var item in food.FoodSizes)
+            {
+                foodSizes.Add(new FoodSizeEntity()
+                {
+                    FoodID= item.FoodID,
+                    FoodSizeID= item.FoodSizeID,
+                    PriceSize= item.PriceSize,
+                    SizeName= item.SizeName
+                });
+            }
+            foreach (var item in food.FoodTypes)
+            {
+                foodTypes.Add(new FoodTypeEntity()
+                {
+                    FoodID = item.FoodID,
+                    FoodTypeID = item.FoodTypeID,
+                    PriceType = item.PriceType,
+                    TypeName = item.TypeName
+                });
+            }
+            FoodEntity foodentity = new FoodEntity()
+            {
+                FoodID = food.FoodID,
+                FileID = food.FileID,
+                FoodImage = food.FoodImage,
+                FoodName = food.FoodName,
+                Price= food.Price,
+                FoodSizes = foodSizes,
+                FoodTypes = foodTypes
+            };
+            return Json(foodentity, JsonRequestBehavior.AllowGet);
         }
     }
 }

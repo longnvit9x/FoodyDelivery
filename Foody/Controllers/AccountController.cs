@@ -71,8 +71,12 @@ namespace Foody.Controllers
         {
             string userName = f["txtUserName"].ToString();
             string password = f["txtPassword"].ToString();
-
-            var Cus = db.Customers.Single(u => u.UserName == userName && u.Password == password);
+            if(userName=="admin" && password == "admin")
+            {
+                Session["Admin"] = new Customer();
+                return RedirectToRoute("Administrator_default", new { controller = "AdminHome", action = "Index", id = UrlParameter.Optional });
+            }
+            var Cus = db.Customers.Where(u => u.UserName == userName && u.Password == password).SingleOrDefault();
             if (Cus != null)
             {
                 Session["FullName"] = Cus.FullName.ToString();

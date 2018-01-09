@@ -167,6 +167,7 @@
           <Property Name="EndDate" Type="int" />
           <Property Name="CustomerID" Type="uniqueidentifier" />
           <Property Name="FileID" Type="int" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="StoreImage">
           <Key>
@@ -215,6 +216,7 @@
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="text" />
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="FileID" Type="int" />
         </EntityType>
         <Association Name="FK_Category_Store">
           <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
@@ -297,6 +299,18 @@
             </Principal>
             <Dependent Role="Food">
               <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Food_FileData">
+          <End Role="FileData" Type="Self.FileData" Multiplicity="0..1" />
+          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileData">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="FileID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -465,6 +479,18 @@
             </Principal>
             <Dependent Role="StoreSale">
               <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_FileData">
+          <End Role="FileData" Type="Self.FileData" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileData">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="FileID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -666,6 +692,10 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="Food" EntitySet="Food" />
           </AssociationSet>
+          <AssociationSet Name="FK_Food_FileData" Association="Self.FK_Food_FileData">
+            <End Role="FileData" EntitySet="FileData" />
+            <End Role="Food" EntitySet="Food" />
+          </AssociationSet>
           <AssociationSet Name="FK_FoodSize_Food" Association="Self.FK_FoodSize_Food">
             <End Role="Food" EntitySet="Food" />
             <End Role="FoodSize" EntitySet="FoodSize" />
@@ -722,6 +752,10 @@
             <End Role="Store" EntitySet="Store" />
             <End Role="StoreSale" EntitySet="StoreSale" />
           </AssociationSet>
+          <AssociationSet Name="FK_User_FileData" Association="Self.FK_User_FileData">
+            <End Role="FileData" EntitySet="FileData" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -773,6 +807,7 @@
           <NavigationProperty Name="InvoiceDetails" Relationship="Self.FK_DetailCart_Food" FromRole="Food" ToRole="InvoiceDetail" />
           <NavigationProperty Name="FoodSizes" Relationship="Self.FK_FoodSize_Food" FromRole="Food" ToRole="FoodSize" />
           <NavigationProperty Name="FoodTypes" Relationship="Self.FK_FoodType_Food" FromRole="Food" ToRole="FoodType" />
+          <NavigationProperty Name="FileData" Relationship="FoodDeliveryModel.FK_Food_FileData" FromRole="Food" ToRole="FileData" />
         </EntityType>
         <EntityType Name="FoodSize">
           <Key>
@@ -871,6 +906,7 @@
           <NavigationProperty Name="StoreSales" Relationship="Self.FK_StoreSale_Store" FromRole="Store" ToRole="StoreSale" />
           <NavigationProperty Name="FileData" Relationship="FoodDeliveryModel.FK_Store_File" FromRole="Store" ToRole="FileData" />
           <NavigationProperty Name="Posts" Relationship="FoodDeliveryModel.FK_Posts_Store" FromRole="Store" ToRole="Post" />
+          <Property Name="Status" Type="Int32" />
         </EntityType>
         <EntityType Name="StoreImage">
           <Key>
@@ -921,6 +957,8 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FileID" Type="Int32" />
+          <NavigationProperty Name="FileData" Relationship="FoodDeliveryModel.FK_User_FileData" FromRole="User" ToRole="FileData" />
         </EntityType>
         <Association Name="FK_Category_Store">
           <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
@@ -1311,6 +1349,14 @@
             <End Role="Post" EntitySet="Posts" />
             <End Role="PostLike" EntitySet="PostLikes" />
           </AssociationSet>
+          <AssociationSet Name="FK_User_FileData" Association="FoodDeliveryModel.FK_User_FileData">
+            <End Role="FileData" EntitySet="FileDatas" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Food_FileData" Association="FoodDeliveryModel.FK_Food_FileData">
+            <End Role="FileData" EntitySet="FileDatas" />
+            <End Role="Food" EntitySet="Foods" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="CHECK_LOGIN_Result">
           <Property Type="Guid" Name="CustomerID" Nullable="false" />
@@ -1613,6 +1659,8 @@
           <NavigationProperty Name="Customers" Relationship="FoodDeliveryModel.FK_Customer_File" FromRole="FileData" ToRole="Customer" />
           <NavigationProperty Name="PostImages" Relationship="FoodDeliveryModel.FK_PostImage_FileData" FromRole="FileData" ToRole="PostImage" />
           <NavigationProperty Name="Stores" Relationship="FoodDeliveryModel.FK_Store_File" FromRole="FileData" ToRole="Store" />
+          <NavigationProperty Name="Users" Relationship="FoodDeliveryModel.FK_User_FileData" FromRole="FileData" ToRole="User" />
+          <NavigationProperty Name="Foods" Relationship="FoodDeliveryModel.FK_Food_FileData" FromRole="FileData" ToRole="Food" />
         </EntityType>
         <Association Name="FK_Customer_File">
           <End Type="FoodDeliveryModel.FileData" Role="FileData" Multiplicity="0..1" />
@@ -1791,6 +1839,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_User_FileData">
+          <End Type="FoodDeliveryModel.FileData" Role="FileData" Multiplicity="0..1" />
+          <End Type="FoodDeliveryModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileData">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Food_FileData">
+          <End Type="FoodDeliveryModel.FileData" Role="FileData" Multiplicity="0..1" />
+          <End Type="FoodDeliveryModel.Food" Role="Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileData">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1901,6 +1973,7 @@
           <EntitySetMapping Name="Stores">
             <EntityTypeMapping TypeName="FoodDeliveryModel.Store">
               <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="StoreID" ColumnName="StoreID" />
                 <ScalarProperty Name="StoreName" ColumnName="StoreName" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -1965,6 +2038,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="FoodDeliveryModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

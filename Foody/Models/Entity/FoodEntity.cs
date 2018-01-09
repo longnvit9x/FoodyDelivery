@@ -8,11 +8,15 @@ namespace Foody.Models.Entity
 {
    public class FoodEntity
     {
-        public string FoodID { get; set; }
+        public Nullable<System.Guid> FoodID { get; set; }
         public string FoodName { get; set; }
-        public decimal Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public string FoodImage { get; set; }
+        public string FoodImageURL { get; set; }
         public string CategoryID { get; set; }
         public string StoreID { get; set; }
+        public Nullable<int> FileID { get; set; }
+        public List<FoodSizeEntity> FoodSizes { get; set; }
+        public List<FoodTypeEntity> FoodTypes { get; set; }
     }
 }

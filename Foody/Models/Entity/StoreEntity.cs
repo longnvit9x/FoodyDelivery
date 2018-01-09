@@ -8,23 +8,24 @@ namespace Foody.Models.Entity
 {
     public class StoreEntity
     {
-        public string StoreID { get; set; }
-        public string StoreName { get; set; }
-        public string Address { get; set; }
-        public string OpenDoor { get; set; }
-        public string CloserDoor { get; set; }
-        public decimal ServiceCharge { get; set; }
-        public decimal ShippingFee { get; set; }
-        public string Manner { get; set; }
-        public string Website { get; set; }
-        public string StoreType { get; set; }
-        public string StoreBanner { get; set; }
-        public double LocationX { get; set; }
-        public double LocationY { get; set; }
-        public double Rating { get; set; }
-        public int Evaluation { get; set; }
-        public decimal ConditionShip { get; set; }
-        public int StartDate { get; set; }
-        public int EndDate { get; set; }
+        public String StoreID { get; set; }
+        public String StoreName { get; set; }
+        public String Address { get; set; }
+        public String OpenDoor { get; set; }
+        public String CloserDoor { get; set; }
+        public Decimal ServiceCharge { get; set; }
+        public Decimal ShippingFee { get; set; }
+        public String Manner { get; set; }
+        public String Website { get; set; }
+        public String StoreType { get; set; }
+        public String StoreBanner { get; set; }
+        public Double LocationX { get; set; }
+        public Double LocationY { get; set; }
+        public Double Rating { get; set; }
+        public Int16 Evaluation { get; set; }
+        public Decimal ConditionShip { get; set; }
+        public Int16 StartDate { get; set; }
+        public Int16 EndDate { get; set; }
+        public Int16 Status { get; set; }
     }
 }

@@ -20,6 +20,8 @@ namespace Foody.Models
             this.Customers = new HashSet<Customer>();
             this.PostImages = new HashSet<PostImage>();
             this.Stores = new HashSet<Store>();
+            this.Users = new HashSet<User>();
+            this.Foods = new HashSet<Food>();
         }
     
         public int FileID { get; set; }
@@ -36,5 +38,9 @@ namespace Foody.Models
         public virtual ICollection<PostImage> PostImages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Store> Stores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Food> Foods { get; set; }
     }
 }

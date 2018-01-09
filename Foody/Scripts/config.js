@@ -1,4 +1,4 @@
-const btnTimeout = 100000;
+var btnTimeout = 100000;
 function executePostNew(strUrl, inputData, successFunc, errorFunc, doneFunc, validateFunc, async) {
     executeAjaxNew(strUrl, inputData, successFunc, errorFunc, doneFunc, "POST", validateFunc, async);
 }
@@ -120,4 +120,10 @@ function executeAjaxUpload(strUrl, inputData, successFunc, errorFunc, doneFunc, 
             console.log("DONE");
         }
     });
+}
+
+function display(header,msg) {
+    $('#txtMsgError').html(msg);
+    $('#txtHeaderError').html(header);
+    $('#errorModalGlobal').modal('show');
 }

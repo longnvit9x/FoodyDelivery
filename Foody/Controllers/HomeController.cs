@@ -13,7 +13,7 @@ namespace Foody.Controllers
     public class HomeController : Controller
     {
         private FoodDeliveryEntities db;
-        int pageSize = 9;
+        int pageSize = 12;
         string sThongBao = "Không tìm kết quả nào phù hợp";
         public HomeController()
         {

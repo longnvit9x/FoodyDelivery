@@ -23,6 +23,17 @@ namespace Foody.Controllers
             {
                 Session["Message"] = null;
             }
+            // check quyen
+            if (Session["UserName"] != null)
+            {
+                Store store = db.Stores.Where(n => n.StoreID == StoreID).SingleOrDefault();
+                Customer cus = (Customer)Session["TaiKhoan"];
+                if (!store.CustomerID.Equals(cus.CustomerID))
+                {
+                    return RedirectToAction("XemChiTiet", "Store", new { StoreID = StoreID });
+                }
+            }
+            //
             var foods = db.Foods.Where(n => n.StoreID == StoreID).OrderBy(x => x.FoodName).ToPagedList(page, pageSize);
             if (foods == null)
             {
@@ -37,6 +48,17 @@ namespace Foody.Controllers
         public ActionResult ThemMonAn(string StoreID)
         {
             var stID = Guid.Parse(StoreID);
+            // check quyen
+            if (Session["UserName"] != null)
+            {
+                Store store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+                Customer cus = (Customer)Session["TaiKhoan"];
+                if (!store.CustomerID.Equals(cus.CustomerID))
+                {
+                    return RedirectToAction("XemChiTiet", "Store", new { StoreID = stID });
+                }
+            }
+            //
             ViewBag.CategoryID = new SelectList(db.Categories.Where(n => n.StoreID == stID)
                 .OrderBy(n => n.CategoryName).ToList(), "CategoryID", "CategoryName");
             ViewBag.StoreID = StoreID;
@@ -66,6 +88,17 @@ namespace Foody.Controllers
         {
             var fID = Guid.Parse(FoodID);
             var stID = Guid.Parse(StoreID);
+            // check quyen
+            if (Session["UserName"] != null)
+            {
+                Store store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+                Customer cus = (Customer)Session["TaiKhoan"];
+                if (!store.CustomerID.Equals(cus.CustomerID))
+                {
+                    return RedirectToAction("XemChiTiet","Store", new { StoreID = stID });
+                }
+            }
+            //
             var food = db.Foods.Where(n => n.FoodID == fID).SingleOrDefault();
             if (food == null)
             {
@@ -145,7 +178,17 @@ namespace Foody.Controllers
             {
                 Session["Message"] = null;
             }
-            
+            // check quyen
+            if (Session["UserName"] != null)
+            {
+                Store store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+                Customer cus = (Customer)Session["TaiKhoan"];
+                if (!store.CustomerID.Equals(cus.CustomerID))
+                {
+                    return RedirectToAction("XemChiTiet", "Store", new { StoreID = stID });
+                }
+            }
+            //
             var lstFoodID = db.Foods.Where(n => n.StoreID == stID).Select(n=> n.FoodID).ToList();
             List<string> lstID = new List<string>();
             lstFoodID.ForEach(n => lstID.Add(n.ToString()));

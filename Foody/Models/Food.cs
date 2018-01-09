@@ -37,5 +37,6 @@ namespace Foody.Models
         public virtual ICollection<FoodSize> FoodSizes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FoodType> FoodTypes { get; set; }
+        public virtual FileData FileData { get; set; }
     }
 }

@@ -9,6 +9,7 @@
     <link href="~/Content/main.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <link href="~/Content/Index.css" rel="stylesheet" />
+    <script src="~/Scripts/config.js"></script>
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -21,9 +22,29 @@
         <div style="clear:both"></div>
         @Html.Partial("~/Views/Home/_Footer.cshtml")
     </div>
+    <div id="errorModalGlobal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="txtHeaderError" class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="txtMsgError">Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @RenderSection("scripts", required: false)
+        <script src="~/Scripts/config.js"></script>
     <script language="javascript" src="~/Scripts/Home.js"></script>
     <script src="~/Scripts/jgSlider.js"></script>
 </body>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Foody.Models;
+using Foody.Models.Dto;
 namespace Foody.Controllers
 {
     public class GioHangController : Controller
@@ -25,7 +26,7 @@ namespace Foody.Controllers
         public ActionResult ThemGioHang(string FoodID, string strURL)
         {
             var stdId = Guid.Parse(FoodID);
-            Food food = db.Foods.SingleOrDefault(n => n.FoodID== stdId);
+            Food food = db.Foods.SingleOrDefault(n => n.FoodID == stdId);
             if (food == null)
             {
                 Response.StatusCode = 404;
@@ -37,7 +38,7 @@ namespace Foody.Controllers
             GioHang sanpham = lstGioHang.Find(n => n.FoodID.Equals(FoodID));
             if (sanpham == null)
             {
-                sanpham = new GioHang(FoodID);
+                sanpham = new GioHang(FoodID, -1, -1);
                 //Add sản phẩm mới thêm vào list
                 lstGioHang.Add(sanpham);
                 return Redirect(strURL);
@@ -134,13 +135,34 @@ namespace Foody.Controllers
         //tạo partial giỏ hàng
         public ActionResult GioHangPartial()
         {
-            if (TongSoLuong() == 0)
+            List<GioHangDto> listGHDto = new List<GioHangDto>();
+            List<GioHangStore> listGH = Session["GioHangStore"] as List<GioHangStore>;
+            if (listGH == null)
             {
-                return PartialView();
+                return PartialView(listGHDto);
             }
-            ViewBag.TongSoLuong = TongSoLuong();
-            ViewBag.TongTien = TongTien();
-            return PartialView();
+           
+            foreach(var giohang in listGH)
+            {
+                if(giohang.Orders!= null && giohang.Orders.Count>0)
+                {
+                    var stID = Guid.Parse(giohang.StoreID);
+                    Store store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+                    if (store == null)
+                    {
+                        return PartialView(listGHDto);
+                    }
+                    var soPhan = 0;
+                    giohang.Orders.ForEach(n => soPhan += n.SoLuong);
+                    GioHangDto ghDto = new GioHangDto();
+                    ghDto.StoreID = store.StoreID+"";
+                    ghDto.StoreName = store.StoreName;
+                    ghDto.StoreImage = store.StoreBanner;
+                    ghDto.SoPhan = soPhan;
+                    listGHDto.Add(ghDto);
+                }
+            }
+            return PartialView(listGHDto);
         }
         //Xây dựng 1 view cho người dùng chỉnh sửa giỏ hàng
         public ActionResult SuaGioHang()
@@ -153,6 +175,7 @@ namespace Foody.Controllers
             return View(lstGioHang);
 
         }
+
 
         //#region Đặt hàng
         ////Xây dựng chức năng đặt hàng
@@ -191,5 +214,101 @@ namespace Foody.Controllers
         //    return RedirectToAction("Index", "Home");
         //}
         //#endregion
+
+        // GET: GioHang
+
+        // ajax
+        public GioHangStore getGioHangStore(string storeID)
+        {
+            List<GioHangStore> listGH = Session["GioHangStore"] as List<GioHangStore>;
+            if (listGH == null)
+            {
+                listGH = new List<GioHangStore>();
+                GioHangStore giohang = new GioHangStore();
+                List<GioHang> order = new List<GioHang>();
+                giohang.StoreID = storeID;
+                giohang.Orders = order;
+                listGH.Add(giohang);
+                Session["GioHangStore"] = listGH;
+                return giohang;
+            }
+            else if (listGH.Find(n => n.StoreID == storeID) == null)
+            {
+                GioHangStore giohang = new GioHangStore();
+                List<GioHang> order = new List<GioHang>();
+                giohang.StoreID = storeID;
+                giohang.Orders = order;
+                listGH.Add(giohang);
+                Session["GioHangStore"] = listGH;
+                return giohang;
+            }
+            GioHangStore giohangStore = listGH.Find(n => n.StoreID == storeID);
+            return giohangStore;
+        }
+
+        [HttpGet]
+        public JsonResult getGioHang(string storeID)
+        {
+            if (Session["TaiKhoan"] != null)
+            {
+                GioHangStore giohangStore = getGioHangStore(storeID);
+                return Json(giohangStore.Orders, JsonRequestBehavior.AllowGet);
+            }
+            return Json(-1, JsonRequestBehavior.AllowGet);
+        }
+
+        //Thêm giỏ hàng
+        [HttpPost]
+        public JsonResult AddFood(FoodAddDto foodadd)
+        {
+            var fdID = Guid.Parse(foodadd.FoodID);
+            Food food = db.Foods.SingleOrDefault(n => n.FoodID == fdID);
+            if (food == null)
+            {
+                return Json(null);
+            }
+            //Lấy ra session giỏ hàng
+            GioHangStore gioHangStore = getGioHangStore(food.StoreID + "");
+            List<GioHang> lstGioHang = new List<GioHang>();
+            if (gioHangStore.Orders != null) { lstGioHang = gioHangStore.Orders; }
+            //Kiểm tra sách này đã tồn tại trong session[giohang] chưa
+            string sizeName;
+            string typeName;
+            FoodSize size = db.FoodSizes.Where(n => n.FoodSizeID == foodadd.FoodSizeID).SingleOrDefault();
+            FoodType type = db.FoodTypes.Where(n => n.FoodTypeID == foodadd.FoodTypeID).SingleOrDefault();
+            GioHang sanpham = lstGioHang.Find(n => n.FoodID.Equals(foodadd.FoodID));
+            sizeName = (size == null) ? "" : size.SizeName;
+            typeName = (type == null) ? "" : type.TypeName;
+            if (sanpham == null || !sanpham.FoodSize.Equals(sizeName) || !sanpham.FoodType.Equals(typeName))
+            {
+                sanpham = new GioHang(foodadd.FoodID, foodadd.FoodSizeID, foodadd.FoodTypeID, foodadd.SoLuong);
+                //Add sản phẩm mới thêm vào list
+                lstGioHang.Add(sanpham);
+                gioHangStore.Orders = lstGioHang;
+                return Json(lstGioHang);
+            }
+            else
+            {
+                sanpham.SoLuong += foodadd.SoLuong;
+                return Json(lstGioHang);
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult deleteCart(string storeID)
+        {
+            if (Session["TaiKhoan"] != null)
+            {
+                List<GioHangStore> listGH = Session["GioHangStore"] as List<GioHangStore>;
+                if (listGH != null)
+                {
+                    listGH.RemoveAll(n => n.StoreID.Equals(storeID));
+                }
+                return Json(true);
+            }
+            return Json(false);
+        }
+
     }
 }

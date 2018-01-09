@@ -42,6 +42,7 @@ namespace Foody.Models
         public Nullable<int> EndDate { get; set; }
         public Nullable<System.Guid> CustomerID { get; set; }
         public Nullable<int> FileID { get; set; }
+        public Nullable<int> Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Category> Categories { get; set; }

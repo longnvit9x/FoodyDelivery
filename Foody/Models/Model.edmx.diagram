@@ -45,6 +45,8 @@
         <EntityTypeShape EntityType="FoodDeliveryModel.PostLike" Width="1.5" PointX="12.75" PointY="14" />
         <AssociationConnector Association="FoodDeliveryModel.FK_PostLike_Customer" />
         <AssociationConnector Association="FoodDeliveryModel.FK_PostLike_Post" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_User_FileData" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Food_FileData" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -7,8 +7,8 @@
         <div class="deli-all-info-restaurant" style="padding-top:5px">
             <div class="deli-dish" id="deligroupdish-14731">
                 @*<p class="deli-title-kind-food">
-                    <span>Thực đơn</span>
-                </p>*@
+                        <span>Thực đơn</span>
+                    </p>*@
                 @{int i = 0; }
                 @foreach (var item in Model)
             {
@@ -34,13 +34,18 @@
                             </p>
                         </div>
                         <div class="deli-more-info">
-                            <div class="adding-food-cart" ng-show="!IsClosed">
-                                @using (Html.BeginForm("ThemGioHang", "GioHang", new { @FoodID = item.FoodID, @strURL = Request.Url.ToString() }))
-                                {
-                                    <input type="submit" id="btnGioHang" class="btn-adding" value="+ ">
-                                }
-                                @*<span class="btn-adding" ng-click="addToCartFromMenu(164654, currentDishPrice, currentDishPrice, 1, $event)">+</span>*@
-                            </div>
+                            @if (ViewBag.StoreAdmin != 1)
+                            {
+                                <div class="adding-food-cart" ng-show="!IsClosed">
+                                    @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @FoodID = item.FoodID, @strURL = Request.Url.ToString() }))
+                                        {
+                                            <input type="submit" id="btnGioHang" class="btn-adding" value="+ ">
+                                        }
+                                        <span class="btn-adding" ng-click="addToCartFromMenu(164654, currentDishPrice, currentDishPrice, 1, $event)">+</span>*@
+
+                                    <input id="btnGioHang" onclick="btnAddCart('@item.FoodID')" class="btn-adding" value="+ " />
+                                </div>
+                            }
                             <div class="product-price">
                                 <p class="current-price">
                                     <span class="txt-blue font16 bold">
@@ -60,17 +65,37 @@
         <div class="bill">
             <div class="row-bill deli-clearfix">
                 <a href="javascript:void(0);" ng-click="" class="cart-stats">
-                    <span id="cart-qty" class="bold font12 ng-binding" ng-bind="totalQty">0</span>
+                    <span id="cart-soluong" class="bold font12 ng-binding" ng-bind="totalQty">0</span>
                     <span class="font12">phần</span>
                 </a>
-                <a href="javascript:void(0)" class="btn-reset" ng-click="clearCart()">Reset</a>
+                <a onclick="deleteCart()" class="btn-reset">Xóa</a>
             </div>
-            <div style="max-height: 300px; overflow-y: auto;">
+            <div id="list-order" style="max-height: 300px; overflow-y: auto;">
                 <!-- ngRepeat: item in OrderDish -->
-            </div><div>
+                @*<div class="row" style="width:100%">
+                    <div class="col-md-3"><img src="@Model[0].FoodImage" alt="@Model[0].FoodName" width="60" height="60"></div>
+                    <div class="col-md-6"> 
+                    <p style="margin:0">@Model[0].FoodName</p>
+                    <span>Size M,Vi ca cao</span>
+                    <span> 270000đ </span>
+                    </div>
+                    <div class="col-md-3 spinner-soluong">
+                        <div class="input-group number-spinner">
+                            <span class="input-group-btn data-dwn">
+                                <button id="btnDouwnCart" class="btn btn-default btn-info btn-soluong-small" data-dir="down"><span class="glyphicon glyphicon-minus"></span></button>
+                            </span>
+                            <input type="text" id="soLuongCart" class="form-control text-center input-soluong-small" value="1" min="1" max="10">
+                            <span class="input-group-btn data-up ">
+                                <button id="btnUpCart" class="btn btn-default btn-info btn-soluong-small" data-dir="up"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+            <div>
                 <div class="row-bill-grey deli-clearfix">
                     <span>Cộng</span>
-                    <span class="bold pull-right ng-binding">0<span class="unit">đ</span></span>
+                    <span id="cart-tongtien" class="bold pull-right ng-binding">0 đ</span>
                 </div>
                 <div class="row-bill-grey clearfix">
                     <span>Phí vận chuyển (Est.)</span>
@@ -80,17 +105,17 @@
                 </div>
                 <div class="row-bill-grey clearfix ng-hide" ng-show="servicePercent > 0">
                     <span>Phục vụ: <span class="bold ng-binding">0%</span></span>
-                    <span class="pull-right ng-binding">0<span class="unit">đ</span></span>
+                    <span class="pull-right ng-binding"><span class="unit">đ</span></span>
                 </div>
                 <div class="row-bill-grey clearfix">
                     <span class="deli-code pull-left" style="width: 96%;">Nhập mã khuyến mãi ở bước hoàn tất </span>
                 </div>
                 <div class="row-bill-grey clearfix">
                     <span class="font16 bold">Tạm tính</span>
-                    <span class="pull-right font16 txt-blue bold" style="color: #085ffb;" ng-hide="OrderValue.value > 0">0<span class="unit">đ</span></span>
+                    <span id="cart-tongtiensausale" class="pull-right font16 txt-blue bold" style="color: #085ffb;">0 đ</span>
                 </div>
                 <a class="btn-book-first"
-                   href="@Url.Action("GioHang", "GioHang")">
+                   onclick="datHang()">
                     <i class="fa fa-check-circle"></i>
                     Đặt Trước
                 </a>
@@ -98,3 +123,94 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade in" id="mdFoodDetail" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none; padding-right: 17px;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="overflow: hidden;">
+            <div class="modal-header modal-food-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>*@
+                <img id="imgFood" class="img-food-header" />
+                <div class="row food-detail">
+                    <div class="col-md-6">
+                        <p id="foodName" class="food-name"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p id="foodPrice" class="food-price"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Số lượng:</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group number-spinner">
+                            <span class="input-group-btn data-dwn">
+                                <button id="btnDouwn" class="btn btn-default btn-info btn-soluong" data-dir="down"><span class="glyphicon glyphicon-minus"></span></button>
+                            </span>
+                            <input type="text" id="soLuong" class="form-control text-center input-soluong" value="1" min="1" max="10">
+                            <span class="input-group-btn data-up ">
+                                <button id="btnUp" class="btn btn-default btn-info btn-soluong" data-dir="up"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <span style="padding-left:5px">Chọn kích thước</span>
+            <div id="foodSize" class="modal-body list-food-detail" style="max-height: 202px; overflow-y: auto;">
+                <form id="lstFoodSize">
+                    <div class="row form-check" style="width:100%">
+                        <div class="col-md-8"><input type="radio" name="radio" checked> <span>Option 01</span></div>
+                        <div class="col-md-4 food-price"><span>+5000đ</span></div>
+                    </div>
+                    <div class="row form-check" style="width:100%">
+                        <div class="col-md-8"><input type="radio" name="radio" checked> <span>Option 01</span></div>
+                        <div class="col-md-4 food-price"><span>+5000đ</span></div>
+                    </div>
+                </form>
+            </div>
+            <hr />
+            <span style="padding-left:5px">Chọn vị</span>
+            <div id="foodType" class="modal-body list-food-detail" style="max-height: 202px; overflow-y: auto;">
+                <form id="lstFoodType">
+                    <div class="row form-check" style="width:100%">
+                        <div class="col-md-8"><input type="radio" name="radio" checked> <span>Option 01</span></div>
+                        <div class="col-md-4 food-price"><span>+5000đ</span></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6"> <button class="btn" disabled><span>Tổng giá:</span><span id="tongGia">0 đ</span> </button></div>
+                    <div class="col-md-6"><button type="button" onclick="addFood()" class="btn btn-primary">Thêm vào giỏ</button></div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade in" id="mdDatHang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="overflow: hidden;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myLargeModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body" style="max-height: 12px; overflow-y: auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div id="BaseUrl"
+     data-storeid="@ViewBag.StoreID"
+     data-baseurl="@Context.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")"></div>
+<script src="~/Scripts/storedetail.js"></script>

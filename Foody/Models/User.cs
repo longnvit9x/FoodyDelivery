@@ -21,5 +21,8 @@ namespace Foody.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
+        public Nullable<int> FileID { get; set; }
+    
+        public virtual FileData FileData { get; set; }
     }
 }

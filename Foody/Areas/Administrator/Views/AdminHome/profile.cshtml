@@ -1,0 +1,11 @@
+﻿@using Foody.Models;
+@model Customer
+<div class="profile clearfix">
+    <div class="profile_pic">
+        <img src="@ViewBag.Avatar" alt="..." class="img-circle profile_img">
+    </div>
+    <div class="profile_info">
+        <span>Chào,</span>
+        <h2>@Model.FullName</h2>
+    </div>
+</div>

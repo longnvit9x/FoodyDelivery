@@ -11,16 +11,14 @@
 <table class="table table-striped table-bordered ">
     <tr>
         <td>Mã món ăn</td>
-
         <td>Tên món ăn</td>
-
         <td>Ảnh</td>
-
-        <td>Đơn giá</td>
-
-
+        <td>Giá món ăn</td>
+        <td>Size</td>
+        <td>Giá size</td>
+        <td>Loại</td>
+        <td>Giá loại</td>
         <td>Số lượng</td>
-
         <td>Thành tiền</td>
     </tr>
 
@@ -29,37 +27,35 @@
     {
         <tr>
             <td>@item.FoodID</td>
-
             <td>@item.FoodName</td>
-
             <td><a href="@Url.Action("XemChiTiet", "Store", new { @StoreID = item.StoreID})"><img src="@item.FoodImage" width="50" height="50" /></a></td>
-
             <td>
-                @String.Format("{0:0,0}", item.DonGia) VNĐ
+                @String.Format("{0:0,0}", item.PriceFood) VNĐ
             </td>
-
+            <td>@item.FoodSize</td>
+            <td>@String.Format("{0:0,0}", item.PriceSize) VNĐ</td>
+            <td>@item.FoodType</td>
+            <td>@String.Format("{0:0,0}", item.PriceType) VNĐ</td>
             <td>@item.SoLuong</td>
-
             <td>@String.Format("{0:0,0}", item.ThanhTien) VNĐ</td>
-
         </tr>
 
     }
 
     <tr>
-        <td colspan="6" style="text-align:right;color:blue">
+        <td colspan="10" style="text-align:right;color:blue">
             @Html.ActionLink("Chỉnh sửa giỏ hàng", "SuaGioHang")
         </td>
 
     </tr>
     <tr>
-        <td colspan="3" style="text-align:left;color:blue">
+        <td colspan="5" style="text-align:left;color:blue">
             @using (Html.BeginForm("XemChiTiet", "Store", new { @StoreID = Model[0].StoreID }))
             {
-                <input type = "submit" value = "Quay lại" />
+                <input type="submit" value="Quay lại" />
             }
         </td>
-        <td colspan="3" style="text-align:right;color:blue">
+        <td colspan="5" style="text-align:right;color:blue">
             @using (Html.BeginForm("DatHang", "GioHang"))
             {
                 <input type="submit" value="Đặt hàng" />

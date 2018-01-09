@@ -10,7 +10,7 @@ namespace Foody.Models.Entity
     {
         public int FoodTypeID { get; set; }
         public string TypeName { get; set; }
-        public decimal PriceType { get; set; }
-        public string FoodID { get; set; }
+        public Nullable<decimal> PriceType { get; set; }
+        public Nullable<System.Guid> FoodID { get; set; }
     }
 }

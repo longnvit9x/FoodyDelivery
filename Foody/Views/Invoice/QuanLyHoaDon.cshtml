@@ -8,8 +8,10 @@
 }
 <style>
     .stt-invoice {
-        background: #beff00;
+      background: #ddd;
         border: solid 3px #ddd;
+        border-radius: 5px;
+        color: #000;
     }
 </style>
 
@@ -92,12 +94,12 @@
                     <p id="VanChuyen_@item.InvoiceID">   @Html.ActionLink("Vận chuyển", "SuaTTHoaDon", new { InvoiceID = item.InvoiceID, status = 3, storeID = ViewBag.StoreID }) </p>
                     <p id="HoanTat_@item.InvoiceID">  @Html.ActionLink("Hoàn tất", "SuaTTHoaDon", new { InvoiceID = item.InvoiceID, status = 4, storeID = ViewBag.StoreID }) </p>
                     <p id="HuyBo_@item.InvoiceID">  @Html.ActionLink("Hủy bỏ", "SuaTTHoaDon", new { InvoiceID = item.InvoiceID, status = 5, storeID = ViewBag.StoreID }) </p>*@
-                <p id="DonMoi_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',0)">Đơn mới</p>
-                <p id="XacThuc_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',1)">Xác thực</p>
-                <p id="CheBien_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',2)">Chế biến</p>
-                <p id="VanChuyen_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',3)">Vận chuyển</p>
-                <p id="HoanTat_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',4)">Hoàn tất</p>
-                <p id="HuyBo_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',5)">Hủy bỏ</p>
+                <p id="DonMoi_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',0)"><a href="#">Đơn mới</a></p>
+                <p id="XacThuc_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',1)"><a href="#">Xác thực</a></p>
+                <p id="CheBien_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',2)"><a href="#">Chế biến</a></p>
+                <p id="VanChuyen_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',3)"><a href="#">Vận chuyển</a></p>
+                <p id="HoanTat_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',4)"><a href="#">Hoàn tất</a></p>
+                <p id="HuyBo_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',5)"><a href="#">Hủy bỏ</a></p>
             </td>
             <td>
 
