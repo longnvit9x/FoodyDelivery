@@ -76,7 +76,7 @@ function performClick(elemId) {
 function submitBinhLuan() {
     var url = baseUrl + "post/createBinhluan";
     var data = {
-        Title: "",
+        Title: $("#title").val(),
         Content: $("#comment").val(),
         Rating:($("#rating-value").html()!=null)?$("#rating-value").html():0,
         StoreID: storeID,

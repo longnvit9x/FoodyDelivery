@@ -1,0 +1,63 @@
+﻿
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i> <span class="badge">@ViewBag.PostNew.Count</span></a>
+    <ul class="dropdown-menu" role="menu" style="width:300px;    padding: 5px 5px 5px 20px;">
+        @if (ViewBag.PostNew.Count == 0)
+        {
+            <li>Không có thông báo</li>}
+        @foreach (var post in ViewBag.PostNew)
+        {
+            if (post.Status == 0)
+            {
+                <li style="width:100%; margin:0;background-color:#b4abab">
+                    <a href="@Url.Action("xemchitiet","store",new { StoreID= post.StoreID})" style="white-space: normal; padding:0; margin:0">
+                        <div class="row" style="width:100%">
+                            <div class="col-md-3" style="padding:0">
+                                @if (post.Customer.Avatar == null)
+                                {
+                                    <img src="@post.Customer.FileData.URL" width="60" height="60">
+                                }
+                                else
+                                {
+                                    <img src="@post.Customer.Avatar" width="60" height="60">
+                                }
+                            </div>
+                            <div class="col-md-9" style="padding:0">
+                                <span style="font-weight:bold">@post.Customer.FullName </span>
+                                <span>  đã đáng giá cửa hàng </span>
+                                <span style="font-weight:bold">  @post.Store.StoreName </span>
+                                <p>@post.Title</p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li style="width:100%; margin:0;">
+                    <a href="@Url.Action("xemchitiet","store",new { StoreID= post.StoreID})" style="white-space: normal; padding:0; margin:0">
+                        <div class="row" style="width:100%">
+                            <div class="col-md-3" style="padding:0">
+                                @if (post.Customer.Avatar == null)
+                                {
+                                    <img src="@post.Customer.FileData.URL" width="60" height="60">
+                                }
+                                else
+                                {
+                                    <img src="@post.Customer.Avatar" width="60" height="60">
+                                }
+                            </div>
+                            <div class="col-md-9" style="padding:0">
+                                <span style="font-weight:bold">@post.Customer.FullName </span>
+                                <span>  đã đáng giá cửa hàng </span>
+                                <span style="font-weight:bold">  @post.Store.StoreName </span>
+                                <p>@post.Title</p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</li>
+

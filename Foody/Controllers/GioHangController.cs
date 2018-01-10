@@ -141,10 +141,10 @@ namespace Foody.Controllers
             {
                 return PartialView(listGHDto);
             }
-           
-            foreach(var giohang in listGH)
+
+            foreach (var giohang in listGH)
             {
-                if(giohang.Orders!= null && giohang.Orders.Count>0)
+                if (giohang.Orders != null && giohang.Orders.Count > 0)
                 {
                     var stID = Guid.Parse(giohang.StoreID);
                     Store store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
@@ -155,7 +155,7 @@ namespace Foody.Controllers
                     var soPhan = 0;
                     giohang.Orders.ForEach(n => soPhan += n.SoLuong);
                     GioHangDto ghDto = new GioHangDto();
-                    ghDto.StoreID = store.StoreID+"";
+                    ghDto.StoreID = store.StoreID + "";
                     ghDto.StoreName = store.StoreName;
                     ghDto.StoreImage = store.StoreBanner;
                     ghDto.SoPhan = soPhan;
@@ -294,6 +294,101 @@ namespace Foody.Controllers
             }
 
         }
+
+        [HttpPost]
+        public JsonResult DatHang(DatHangDto datHangDto)
+        {
+            if (Session["TaiKhoan"] != null)
+            {
+                try
+                {
+                    Customer cus = (Customer)Session["TaiKhoan"];
+                    var stID = Guid.Parse(datHangDto.StoreID);
+                    Store store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+                    GioHangStore gioHangStore = getGioHangStore(stID + "");
+                    List<GioHang> lstGioHang = new List<GioHang>();
+                    if (store != null && gioHangStore.Orders != null)
+                    {
+                        lstGioHang = gioHangStore.Orders;
+                        var tongCong = 0;
+                        lstGioHang.ForEach(n => tongCong += (int)n.ThanhTien);
+                        var totalPrice = tongCong;
+                        var serviceChange = 0;
+                        if (tongCong < store.ConditionShip)
+                        {
+                            totalPrice += (int)store.ServiceCharge;
+                            serviceChange = (int)store.ServiceCharge;
+                        }
+                        var sale = 0;
+                        if (datHangDto.StoreSaleID != 0)
+                        {
+                            StoreSale stSale = db.StoreSales.Where(n => n.StoreSaleID == datHangDto.StoreSaleID && n.StoreID == store.StoreID).SingleOrDefault();
+                            if(stSale != null)
+                            {
+                                sale = totalPrice * (int)stSale.Sale / 100;
+                                totalPrice = totalPrice - sale;
+                            }
+                        }
+                        var shippingFee = 0;
+                        if (datHangDto.Distance > 0)
+                        {
+                            shippingFee = (int)(datHangDto.Distance * store.ShippingFee);
+                        }
+                        lstGioHang = gioHangStore.Orders;
+                        Invoice iv = new Invoice()
+                        {
+                            InvoiceID = Guid.NewGuid(),
+                            OrderDate = DateTime.Now,
+                            DeliveryDate = DateTime.Parse(datHangDto.DateDelivery + " " + datHangDto.TimeDelivery),
+                            AddressDelivery = datHangDto.CustomerAddress,
+                            CustomerID = cus.CustomerID,
+                            CustomerName = datHangDto.CustomerName,
+                            CustomerPhone = datHangDto.CustomerPhone,
+                            StoreID = stID,
+                            ServiceChange = serviceChange,
+                            Sale = sale,
+                            ShippingFee = shippingFee,
+                            TotalPrice = totalPrice,
+                            Status = 0
+                        };
+                        if (ModelState.IsValid)
+                        {
+                            //Thực hiện cập nhận trong model
+                            db.Entry(iv).State = System.Data.Entity.EntityState.Added;
+                            db.SaveChanges();
+                        }
+
+                        foreach (var gh in lstGioHang)
+                        {
+                            var foodID = Guid.Parse(gh.FoodID);
+                            InvoiceDetail ivDT = new InvoiceDetail()
+                            {
+                                InvoiceID = iv.InvoiceID,
+                                FoodID = foodID,
+                                Size = gh.FoodSize,
+                                PriceSize = (decimal)gh.PriceSize,
+                                Type = gh.FoodType,
+                                PriceType = (Decimal)gh.PriceType,
+                                NumberFood = gh.SoLuong,
+                            };
+                            if (ModelState.IsValid)
+                            {
+                                //Thực hiện cập nhận trong model
+                                db.Entry(ivDT).State = System.Data.Entity.EntityState.Added;
+                                db.SaveChanges();
+                            }
+                        }
+                        return Json(true);
+                    }
+                }
+                catch
+                {
+                    return Json(false);
+                }
+            }
+            return Json(false);
+        }
+
 
         [HttpPost]
         public JsonResult deleteCart(string storeID)

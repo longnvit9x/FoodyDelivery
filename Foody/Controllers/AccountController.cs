@@ -29,6 +29,21 @@ namespace Foody.Controllers
             return View();
         }
 
+        public ActionResult ThongBaoPartial()
+        {
+            List<Post> lstPost = new List<Post>();
+            if (Session["TaiKhoan"] != null)
+            {
+                Customer cus = (Customer)Session["TaiKhoan"];
+                lstPost = db.Posts.Where(n => n.CustomerID == cus.CustomerID)
+                    .OrderByDescending(n => n.PostTime).ToList();
+                ViewBag.PostNew = lstPost;
+                return PartialView();
+            }
+           
+            return PartialView();
+        }
+
         [HttpPost]
         public ActionResult Register(Customer cus, HttpPostedFileBase image)
         {
@@ -140,6 +155,18 @@ namespace Foody.Controllers
                 }
             }
             return View(customer);
+        }
+
+        public ActionResult HistoryInvoice()
+        {
+            if (Session["FullName"] != null)
+            {
+                Customer cus = (Customer)Session["TaiKhoan"];
+                List<Invoice> lstInvoice = db.Invoices.Where(n => n.CustomerID == cus.CustomerID)
+                    .OrderByDescending(n=>n.OrderDate).ToList();
+                return View(lstInvoice);
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult Logout()

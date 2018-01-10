@@ -19,6 +19,7 @@ namespace Foody.Models
         public Nullable<System.DateTime> StartSale { get; set; }
         public Nullable<System.DateTime> StopSale { get; set; }
         public Nullable<System.Guid> StoreID { get; set; }
+        public string KeySale { get; set; }
     
         public virtual Store Store { get; set; }
     }

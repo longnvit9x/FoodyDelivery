@@ -1,0 +1,245 @@
+﻿@model IEnumerable<Foody.Models.Invoice>
+
+@{
+    ViewBag.Title = "HistoryInvoice";
+    Layout = "~/Views/Shared/_LayoutStore.cshtml";
+}
+
+<h2 class="text-center">Lịch sử đặt hàng</h2>
+<style>
+    .donhang-container {
+        margin: auto;
+        padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        background-color: #ffffff;
+        width: 100%;
+    }
+
+    .donhang-total {
+        text-align: right;
+    }
+
+    .donhang-status {
+        color: #808080;
+        text-align: center;
+    }
+
+    .donhang-status-red {
+        background-color: #e9d8d8;
+        color: #ff2e2e;
+    }
+
+    .donhang-store {
+        text-align: right;
+    }
+
+    .donhang-food-container {
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+        border-left: 1px solid #eee;
+    }
+
+    .donhang-store-container {
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+        border-right: 1px solid #eee;
+    }
+
+    .donhang-food {
+        margin-top: 5px;
+    }
+
+    .donhang-status-container {
+        width: 100%;
+    }
+</style>
+@foreach (var item in Model)
+{   <div class="donhang-container">
+        <div class="row donhang-header">
+            <div class="col-md-5" style="color:#ff2e2e">Đơn hàng: #@item.InvoiceID</div>
+            <div class="col-md-3">Đặt ngày: @item.OrderDate</div>
+            <div class="col-md-3 donhang-total">Tổng tiền: @item.TotalPrice VND</div>
+            @if (item.Status < 2)
+            {
+                <div  id="btnHuyDon_@item.InvoiceID" class="col-md-1"><a onclick="huyDon('@item.InvoiceID', 5)" style="color:red">Hủy đơn</a></div>
+            }
+        </div>
+        <hr />
+        <div class="row donhang-body">
+            <div class="col-md-6">Giao ngày: @item.DeliveryDate</div>
+            <div class="col-md-6 donhang-store">Đặt tại: <a href="@Url.Action("XemChiTiet","Store",new { StoreID = @item.StoreID })">@item.Store.StoreName</a> </div>
+        </div>
+        <hr style="margin-bottom: 0;" />
+        <div class="row donhang-status-container">
+            <div class="col-md-2" style="line-height: 66px;">Trạng thái:</div>
+            @if (item.Status <= 1)
+            {
+                <div id="XacThuc_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang xác thực</p>
+                </div>
+            }
+            else
+            {
+                <div id="XacThuc_@item.InvoiceID" class="col-md-2 donhang-status">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang xác thực</p>
+                </div>
+            }
+            @if (item.Status == 2)
+            {
+                <div  id="CheBien_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang chế biến</p>
+                </div>
+            }
+            else
+            {
+                <div  id="CheBien_@item.InvoiceID" class="col-md-2 donhang-status">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang chế biến</p>
+                </div>
+            }
+            @if (item.Status == 3)
+            {
+                <div id="VanChuyen_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang vận chuyển</p>
+                </div>
+            }
+            else
+            {
+                <div id="VanChuyen_@item.InvoiceID" class="col-md-2 donhang-status">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang vận chuyển</p>
+                </div>
+            }
+            @if (item.Status == 4)
+            {
+                <div id="HoanThanh_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
+                    <p><span  class="fa fa-circle"></span></p>
+                    <p>Đang hoàn thành</p>
+                </div>
+            }
+            else
+            {
+                <div id="HoanThanh_@item.InvoiceID" class="col-md-2 donhang-status">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Đang hoàn thành</p>
+                </div>
+            }
+           
+            @if (item.Status == 5)
+            {
+                <div id="HuyBo_@item.InvoiceID"  class="col-md-2 donhang-status donhang-status-red">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Hủy bỏ</p>
+                </div>
+            }
+            else
+            {
+                <div id="HuyBo_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red" style="display:none">
+                    <p><span class="fa fa-circle"></span></p>
+                    <p>Hủy bỏ</p>
+                </div>
+            }
+        </div>
+        <div class="row ">
+            <div class="col-md-6 donhang-store-container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Người nhận:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.CustomerName</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Địa chỉ nhận hàng:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.AddressDelivery</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Số điện thoại:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.CustomerPhone</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 donhang-food-container">
+                @foreach (var invoicedetail in item.InvoiceDetails)
+                {
+                    <div class="row donhang-food">
+                        <div class="col-md-3">
+                            <img src="@invoicedetail.Food.FoodImage" alt="@invoicedetail.Food.FoodName" width="80" height="80">
+                        </div>
+                        <div class="col-md-5">
+                            <p><span>@invoicedetail.Food.FoodName</span><span> @invoicedetail.Food.Price đ</span></p>
+                            @if (invoicedetail.Type != null && invoicedetail.Type != "")
+                            {
+                                <p><span></span><span>+@invoicedetail.PriceType đ</span></p>
+                            }
+                            <p><span>@invoicedetail.Size</span><span> +@invoicedetail.PriceSize đ</span></p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><span>@invoicedetail.NumberFood phần</span></p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><span>@Decimal.Parse((invoicedetail.Food.Price + invoicedetail.PriceSize + invoicedetail.PriceType) * invoicedetail.NumberFood + "") đ</span></p>
+                        </div>
+                    </div>
+                }
+                <hr style="margin-top:0" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Tổng cộng:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.InvoiceDetails.Sum(n => (n.Food.Price + n.PriceSize + n.PriceType) * n.NumberFood)đ</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Phí dịch vụ:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.ServiceChange đ</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Phí vận chuyển:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.ShippingFee đ</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Khuyến mại:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.Status %</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Tổng tiền:</p>
+                    </div>
+                    <div class="col-md-9">
+                        <span>@item.TotalPrice VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div id="BaseUrl"
+     data-baseurl="@Context.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")"></div>
+<script src="~/Scripts/historyinvoice.js"></script>

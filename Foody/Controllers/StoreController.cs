@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Foody.Models;
 using Foody.Models.Entity;
+using Foody.Models.Dto;
 using PagedList;
 using System.IO;
 
@@ -154,6 +155,8 @@ namespace Foody.Controllers
                 {
                     storeAdmin = 1;
                 }
+                ViewBag.StoreName = store.StoreName;
+                ViewBag.StoreAddress = store.Address;
             }
             ViewBag.StoreAdmin = storeAdmin;
             ViewBag.StoreID = StoreID;
@@ -337,23 +340,70 @@ namespace Foody.Controllers
             return null;
         }
 
+        public ActionResult ModalDatHang(string StoreID)
+        {
+            var stID = Guid.Parse(StoreID);
+            var store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+            return PartialView(store);
+        }
 
         //ajax
+        [HttpGet]
+        public JsonResult getStore(string StoreID)
+        {
+            var stID = Guid.Parse(StoreID);
+            var store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+            if (store == null)
+            {
+                return Json(-1, JsonRequestBehavior.AllowGet);
+            }
+            StoreEntity st = new StoreEntity
+            {
+                StoreID = "" + store.StoreID,
+                Manner = store.Manner,
+                ServiceCharge=(decimal) store.ServiceCharge,
+                ShippingFee= (decimal)store.ShippingFee,
+                ConditionShip= (decimal)store.ConditionShip,
+                StoreName= store.StoreName,
+                StoreType= store.StoreType,
+                Address= store.Address
+            };
+            return Json(st, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public JsonResult appySale(string KeySale, string StoreID)
+        { var stID = Guid.Parse(StoreID);
+            var sale = db.StoreSales.Where(n => n.KeySale == KeySale && n.StoreID== stID && n.StartSale<= DateTime.Now && n.StopSale>= DateTime.Now ).SingleOrDefault();
+            if (sale == null)
+            {
+                return Json(-1, JsonRequestBehavior.AllowGet);
+            }
+            SaleDto slDto = new SaleDto
+            {
+                StoreID = ""+sale.StoreID,
+                SaleNumber= (int)sale.Sale,
+                StoreSaleID= sale.StoreSaleID
+            };
+            return Json(slDto, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult getFoodDetail(string FoodID)
         {
             var fdID = Guid.Parse(FoodID);
             var food = db.Foods.Where(n => n.FoodID == fdID).SingleOrDefault();
-            List <FoodSizeEntity> foodSizes= new List<FoodSizeEntity>();
+            List<FoodSizeEntity> foodSizes = new List<FoodSizeEntity>();
             List<FoodTypeEntity> foodTypes = new List<FoodTypeEntity>();
-            foreach ( var item in food.FoodSizes)
+            foreach (var item in food.FoodSizes)
             {
                 foodSizes.Add(new FoodSizeEntity()
                 {
-                    FoodID= item.FoodID,
-                    FoodSizeID= item.FoodSizeID,
-                    PriceSize= item.PriceSize,
-                    SizeName= item.SizeName
+                    FoodID = item.FoodID,
+                    FoodSizeID = item.FoodSizeID,
+                    PriceSize = item.PriceSize,
+                    SizeName = item.SizeName
                 });
             }
             foreach (var item in food.FoodTypes)
@@ -372,7 +422,7 @@ namespace Foody.Controllers
                 FileID = food.FileID,
                 FoodImage = food.FoodImage,
                 FoodName = food.FoodName,
-                Price= food.Price,
+                Price = food.Price,
                 FoodSizes = foodSizes,
                 FoodTypes = foodTypes
             };

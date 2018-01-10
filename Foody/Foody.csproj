@@ -208,8 +208,10 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dto\CommentDto.cs" />
+    <Compile Include="Models\Dto\DatHangDto.cs" />
     <Compile Include="Models\Dto\FoodAddDto.cs" />
     <Compile Include="Models\Dto\GioHangDto.cs" />
+    <Compile Include="Models\Dto\SaleDto.cs" />
     <Compile Include="Models\Entity\CategoryEntity.cs" />
     <Compile Include="Models\Entity\CustomerEntity.cs" />
     <Compile Include="Models\Entity\FoodEntity.cs" />
@@ -3891,6 +3893,7 @@
     <Content Include="Content\login.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\main.min.css" />
+    <Content Include="Content\map.css" />
     <Content Include="Content\menutop.css" />
     <Content Include="Content\nivoslider.css" />
     <Content Include="Content\PagedList.css" />
@@ -3949,6 +3952,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\comment.js" />
     <Content Include="Scripts\config.js" />
+    <Content Include="Scripts\historyinvoice.js" />
     <Content Include="Scripts\Home.js" />
     <Content Include="Scripts\invoice.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
@@ -4842,6 +4846,7 @@
     <Content Include="Scripts\jqueryanimateNumber.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\main.min.js" />
+    <Content Include="Scripts\mapmodal.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\owl.carousel.min.js" />
     <Content Include="Scripts\register.js" />
@@ -4910,6 +4915,9 @@
     <Content Include="Views\Post\BinhLuan.cshtml" />
     <Content Include="Views\Post\ThongTinDanhGia.cshtml" />
     <Content Include="Views\GioHang\TongBill.cshtml" />
+    <Content Include="Views\Store\ModalDatHang.cshtml" />
+    <Content Include="Views\Account\HistoryInvoice.cshtml" />
+    <Content Include="Views\Account\ThongBaoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

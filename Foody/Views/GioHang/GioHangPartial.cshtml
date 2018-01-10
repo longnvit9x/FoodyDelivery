@@ -7,6 +7,12 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i> <span class="badge">@Model.Count</span></a>
     <ul class="dropdown-menu" role="menu" style="width:250px">
+        @if (Model.Count < 1)
+        {
+            <li>
+               Không có giỏ hàng nào
+            </li>
+        }
         @foreach (var giohang in Model)
         {
             <li>

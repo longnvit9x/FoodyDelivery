@@ -17,7 +17,12 @@
                         <span class="ng-binding">@item.Rating.0</span>
                     </div>
                     @*<span><i class="ion-more">@item.Rating</i></span>*@
-                    <div class="window"><span></span></div>
+                    <div class="window">
+                        @if (ViewBag.CustomerID == item.CustomerID)
+                        {
+                        <button type="button" id="btnDeletePost_@item.PostID" class="close" aria-hidden="true" style="position:absolute;top:-13px;right:10px;">×</button>
+                        }
+                     </div>
                 </div>
                 <div class="box-content">
                     <div class="content">
@@ -115,6 +120,10 @@
                                     <a href="#">@comment.CommentLike thích</a>
                                 </span>
                             </div>
+                            @if (ViewBag.CustomerID == comment.CustomerID)
+                            {
+                            <button type="button" id="btnDeletePost_@comment.PostCommentID" class="close" aria-hidden="true" style="position:absolute;top:20px;right:20px;">×</button>
+                            }
                         </div>
                         j++;
                         if (j >= 5) { break; }

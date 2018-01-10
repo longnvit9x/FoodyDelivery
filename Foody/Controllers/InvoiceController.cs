@@ -25,7 +25,9 @@ namespace Foody.Controllers
                 Session["Message"] = null;
             }
             var stID = Guid.Parse(StoreID);
-            var invoices = db.Invoices.Where(n => n.StoreID == stID).OrderBy(x => x.CustomerName).ToPagedList(page, pageSize);
+            var invoices = db.Invoices.Where(n => n.StoreID == stID)
+                .OrderBy(x => x.Status)
+                .ToPagedList(page, pageSize);
             if (invoices == null)
             {
                 //Trả về trang báo lỗi 

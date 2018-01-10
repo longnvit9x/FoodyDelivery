@@ -149,10 +149,12 @@
   overflow: hidden;
   padding: 0 30px;
   position: relative;
+ border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
 }
  .box > .box-likes > .row {
-  border-top: 1px solid #F4F4F4;
-   border-bottom: 1px solid #F4F4F4;
+  /*border-top: 1px solid #F4F4F4;
+   border-bottom: 1px solid #F4F4F4;*/
   /*padding: 20px 0;*/
 }
  .box > .box-likes > .row > span {
@@ -260,7 +262,7 @@
   position: relative;
 }
  .box > .box-comments > .comment {
-  /*border-top: 1px solid #F4F4F4;*/
+  border-top: 1px solid #e1d6d6;
   margin: 0;
   overflow: hidden;
   padding: 5px 10px;
@@ -477,7 +479,7 @@
 
 .review-points {
     position: absolute;
-    right: 0;
+    right: 25px;
     top: 0;
 }
 

@@ -23,7 +23,7 @@ namespace Foody.Controllers
 
         public ActionResult Index(int page = 1)
         {
-            var model = db.Stores.OrderBy(x => x.StoreName).ToPagedList(page, pageSize);
+            var model = db.Stores.Where(n=>n.Status!=0).OrderBy(x => x.StoreName).ToPagedList(page, pageSize);
             return View(model);
         }
 
@@ -106,8 +106,6 @@ namespace Foody.Controllers
                 }
                 ViewBag.CustomerImage = cus.Avatar;
                 List<Store> lstKQTK = db.Stores.Where(n => n.CustomerID == cusID).ToList();
-                List<Post> lstPost = db.Posts.Where(n => n.CustomerID == cusID && n.Status==0).OrderBy(n=> n.PostTime).ToList();
-                ViewBag.PostNew = lstPost;
                 return PartialView(lstKQTK);
             }
             return PartialView();
