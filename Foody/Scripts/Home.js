@@ -9,7 +9,7 @@ $(document).ready(function ($) {
         }
         if ($('div#menu-left').length) {
             if ((($(this).scrollTop()) + $('#menu-header').height()) > $('div#menu-left').parent().position().top) {
-                console.log("menu search", $(this).scrollTop());
+                //console.log("menu search", $(this).scrollTop());
                 $("div#menu-seach")
                     .css('top', nav.height())
                     .css('width', $("div#menu-seach").parent().width())

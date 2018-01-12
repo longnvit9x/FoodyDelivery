@@ -38,6 +38,28 @@ namespace Foody.Controllers
             return View(invoices);
         }
 
+        public ActionResult QuanLyHoaDonCustomer(string StoreID, string CustomerID, int page, string method)
+        {
+            if (method == null)
+            {
+                Session["Message"] = null;
+            }
+            var stID = Guid.Parse(StoreID);
+            var cusID = Guid.Parse(CustomerID);
+            var invoices = db.Invoices.Where(n => n.StoreID == stID && n.CustomerID== cusID)
+                .OrderBy(x => x.OrderDate)
+                .ToPagedList(page, pageSize);
+            if (invoices == null)
+            {
+                //Trả về trang báo lỗi 
+                Response.StatusCode = 404;
+                return null;
+            }
+            ViewBag.CustomerName = invoices.First().Customer.FullName;
+            ViewBag.StoreID = StoreID;
+            return View(invoices);
+        }
+
         public ActionResult SuaTTHoaDon(string InvoiceID, int status, string StoreID)
         {
             var ivID = Guid.Parse(InvoiceID);

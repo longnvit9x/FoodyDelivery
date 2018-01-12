@@ -1,0 +1,105 @@
+﻿@using Foody.Models
+@model PagedList.IPagedList<Invoice>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "QuanLyHoaDon";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .stt-invoice {
+        background: #ddd;
+        border: solid 3px #ddd;
+        border-radius: 5px;
+        color: #000;
+    }
+</style>
+
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = ViewBag.StoreID })
+}
+<div class="table-container">
+    <h4 class="txt-title">Các đơn hàng của @ViewBag.CustomerName</h4>
+    <hr />
+    <p>
+        <a href="@Url.Action("QuanLyKhachHang","Store", new { StoreID= ViewBag.StoreID,page=1})">Quay lại quản lý khách hàng</a>
+    </p>
+    <h5 class="text-warning"> @Session["Message"]</h5>
+    <h5 id="message" class="text-warning"></h5>
+    <table class="table  table-bordered table-striped">
+        <tr>
+              <th>
+                @Html.DisplayNameFor(model => model.First().InvoiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().DeliveryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().CustomerPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AddressDelivery)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Status)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvoiceID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressDelivery)
+                </td>
+                <td class="col-xs-2">
+                    <p id="DonMoi_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',0)"><a href="#">Đơn mới</a></p>
+                    <p id="XacThuc_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',1)"><a href="#">Xác thực</a></p>
+                    <p id="CheBien_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',2)"><a href="#">Chế biến</a></p>
+                    <p id="VanChuyen_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',3)"><a href="#">Vận chuyển</a></p>
+                    <p id="HoanTat_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',4)"><a href="#">Hoàn tất</a></p>
+                    <p id="HuyBo_@item.InvoiceID" onclick="updateSTT('@item.InvoiceID',5)"><a href="#">Hủy bỏ</a></p>
+                </td>
+                <td>
+
+                    @Html.ActionLink("Xem", "InvoiceDetail", new { StoreID = ViewBag.StoreID, InvoiceID = item.InvoiceID, page = 1 })
+
+                </td>
+            </tr>
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="8">
+                    Không có dữ liệu
+                </td>
+            </tr>
+        }
+    </table>
+    @Html.PagedListPager(Model, page => Url.Action("QuanLyHoaDonCustomer", new { StoreID = ViewBag.StoreID, page }))
+</div>
+<div id="BaseUrl"
+     data-storeid="@ViewBag.StoreID"
+     data-baseurl="@Context.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")"></div>
+<script src="~/Scripts/invoice.js"></script>

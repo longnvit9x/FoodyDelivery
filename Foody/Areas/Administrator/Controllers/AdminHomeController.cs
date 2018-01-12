@@ -27,7 +27,7 @@ namespace Foody.Areas.Administrator.Models
         {
             Customer cus= (Customer)Session["Admin"];
             ViewBag.FullName = "";
-            FileData fileData = db.FileDatas.FirstOrDefault(p => p.FileID == cus.FileID);
+            FileData fileData = db.FileDatas.Where(p => p.FileID == cus.FileID).SingleOrDefault();
             if (fileData != null && fileData.URL != null)
             {
                 ViewBag.Avatar = fileData.URL;
@@ -37,6 +37,15 @@ namespace Foody.Areas.Administrator.Models
                 ViewBag.Avatar = cus.Avatar;
             }
             return PartialView(cus);
+        }
+
+        public ActionResult Logout()
+        {
+            if (Session["Admin"] != null)
+            {
+                Session.Clear();
+            }
+            return RedirectToRoute("Default", new { controller = "Home", action = "Index", id = UrlParameter.Optional });
         }
     }
 }

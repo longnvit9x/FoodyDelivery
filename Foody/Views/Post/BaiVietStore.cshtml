@@ -7,7 +7,7 @@
     <div class="col-md-8">
         @foreach (var item in Model)
         {
-            <div class="box update">
+            <div id="postcontainer_@item.PostID" class="box update">
                 <div class="box-header">
                     <h3>
                         <a href=""><img src="@item.Customer.FileData.URL" alt="" />@item.Customer.FullName</a>
@@ -18,11 +18,24 @@
                     </div>
                     @*<span><i class="ion-more">@item.Rating</i></span>*@
                     <div class="window">
-                        @if (ViewBag.CustomerID == item.CustomerID)
+                        @if (ViewBag.CustomerID == item.CustomerID || ViewBag.StoreAdmin == 1)
                         {
-                        <button type="button" id="btnDeletePost_@item.PostID" class="close" aria-hidden="true" style="position:absolute;top:-13px;right:10px;">×</button>
+                            <ul class="nav navbar-right btn-delete-post">
+                                <li class="dropdown">
+                                    <p class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-list-ul" aria-hidden="true"></i></p>
+                                    <ul class="dropdown-menu" role="menu" style="margin:-5px;border-radius:0;">
+                                        <li>
+                                            <a onclick="btnHidePost(@item.PostID)"><i class="fa fa-minus-square" aria-hidden="true"></i> Ẩn bài viết</a>
+                                        </li>
+                                        <li>
+                                            <a onclick="btnDeletePost(@item.PostID)"><i class="fa fa-window-close" aria-hidden="true"></i> Xóa bài viết</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            @*<button type="button" id="btnDeletePost_@item.PostID" class="close" aria-hidden="true" style="position:absolute;top:-13px;right:10px;">×</button>*@
                         }
-                     </div>
+                    </div>
                 </div>
                 <div class="box-content">
                     <div class="content">
@@ -78,8 +91,8 @@
                 }
                 <div class="box-buttons">
                     <div class="row">
-                        <button  onclick="btnLike(@item.PostID)">
-                            @if (isLike==1)
+                        <button onclick="btnLike(@item.PostID)">
+                            @if (isLike == 1)
                             { <span id="iconLike_@item.PostID" class="fa fa-thumbs-up">   Thích</span> }
                             else
                             {<span id="iconLike_@item.PostID" class="fa fa-thumbs-o-up">   Thích</span>  }
@@ -87,16 +100,16 @@
                         <button onclick="btnBinhluan(@item.PostID)"><span class="fa fa-comment-o">  Bình luận</span></button>
                     </div>
                 </div>
-                    <div class="box-likes">
-                            <div class="row">
-                                <span><a id="numberLike_@item.PostID" href="#">@item.PostLikes.Count</a></span>
-                                <span>lượt thích</span>
-                            </div>
-                            <div class="row">
-                                <span id="numberComment_@item.PostID">@item.PostComments.Count</span>
-                                <span>bình luận</span>
-                            </div>
+                <div class="box-likes">
+                    <div class="row">
+                        <span><a id="numberLike_@item.PostID" href="#">@item.PostLikes.Count</a></span>
+                        <span>lượt thích</span>
                     </div>
+                    <div class="row">
+                        <span id="numberComment_@item.PostID">@item.PostComments.Count</span>
+                        <span>bình luận</span>
+                    </div>
+                </div>
 
                 @if (item.PostComments.Count > 5)
                 {
@@ -104,14 +117,15 @@
                 }
                 @{ int j = 1;}
 
+
                 <div id="listComment_@item.PostID" class="box-comments">
                     @foreach (var comment in item.PostComments)
-                    {
-                        <div class="comment">
+                        {
+                        <div id="commentcontainer_@comment.PostCommentID" class="comment">
                             <img src="@comment.Customer.FileData.URL" alt="" />
                             <div class="content">
-                               
-                                    <h3><a href="">@comment.Customer.FullName</a></h3>
+
+                                <h3><a href="">@comment.Customer.FullName</a></h3>
                                 <p>
                                     @comment.CommentContent
                                 </p>
@@ -120,14 +134,14 @@
                                     <a href="#">@comment.CommentLike thích</a>
                                 </span>
                             </div>
-                            @if (ViewBag.CustomerID == comment.CustomerID)
-                            {
-                            <button type="button" id="btnDeletePost_@comment.PostCommentID" class="close" aria-hidden="true" style="position:absolute;top:20px;right:20px;">×</button>
-                            }
+                            @if (ViewBag.CustomerID == comment.CustomerID || ViewBag.StoreAdmin == 1)
+                                {
+                                <button type="button" onclick="btnDeleteComment(@comment.PostCommentID)" id="btnDeletePost_@comment.PostCommentID" class="close" aria-hidden="true" style="position:absolute;top:20px;right:20px;">×</button>
+                                }
                         </div>
-                        j++;
-                        if (j >= 5) { break; }
-                    }
+                            j++;
+                            if (j >= 5) { break; }
+                        }
                 </div>
 
                 @if (ViewBag.CustomerID != null)
@@ -161,7 +175,9 @@
                     </div>
                 }
             </div>
+
                     }
+
     </div>
     <div class="col-md-4" style="margin-right:0">
         @Html.Action("ThongTinDanhGia", "Post", new { StoreID = ViewBag.StoreID })

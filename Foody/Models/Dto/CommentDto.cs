@@ -7,6 +7,7 @@ namespace Foody.Models.Dto
 {
     public class CommentDto
     {
+        public int PostCommentID { get; set; }
         public string CommentContent { get; set; }
         public int CommentLike { get; set; }
         public string CommentTime { get; set; }

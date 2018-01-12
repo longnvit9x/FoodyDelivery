@@ -67,5 +67,13 @@ namespace Foody.Areas.Administrator.Controllers
                 return Json(false);
             }
         }
+
+        public ActionResult DanhSachCuaHang()
+        {
+            List<Store> lst = new List<Store>();
+            lst = db.Stores.OrderBy(n => n.Status).ToList();
+            return View(lst);
+        }
+
     }
 }

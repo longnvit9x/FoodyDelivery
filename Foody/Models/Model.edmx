@@ -115,6 +115,7 @@
           <Property Name="StoreID" Type="uniqueidentifier" />
           <Property Name="CustomerID" Type="uniqueidentifier" />
           <Property Name="Status" Type="int" />
+          <Property Name="Hide" Type="int" />
         </EntityType>
         <EntityType Name="PostComment">
           <Key>
@@ -1720,6 +1721,7 @@
           <NavigationProperty Name="PostComments" Relationship="FoodDeliveryModel.FK_PostComment_Post" FromRole="Post" ToRole="PostComment" />
           <NavigationProperty Name="PostLikes" Relationship="FoodDeliveryModel.FK_PostLike_Post" FromRole="Post" ToRole="PostLike" />
           <Property Name="Status" Type="Int32" />
+          <Property Name="Hide" Type="Int32" />
         </EntityType>
         <Association Name="FK_Posts_Customer">
           <End Type="FoodDeliveryModel.Customer" Role="Customer" Multiplicity="0..1" />
@@ -2465,6 +2467,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="FoodDeliveryModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="StoreID" ColumnName="StoreID" />

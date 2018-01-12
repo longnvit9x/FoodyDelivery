@@ -1,0 +1,78 @@
+﻿@using Foody.Models
+@using PagedList.Mvc
+@model PagedList.IPagedList<Customer>
+@{
+    ViewBag.Title = "QuanLyKhachHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = ViewBag.StoreID })
+}
+<div class="table-container">
+    <h4 class="txt-title">Quản lý khách hàng</h4>
+    <hr />
+    <h5 class="text-warning"> @Session["Message"]</h5>
+    <div class="table-body" style="width:100%">
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Mobile)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Email)
+                </th>
+                <th>
+                    Anh đại diện
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mobile)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @if (item.Avatar == null)
+                        {
+                            <img src="@Html.DisplayFor(modelItem => item.FileData.URL)" width="100" />
+                        }
+                        else
+                        {
+                            <img src="@Html.DisplayFor(modelItem => item.Avatar)" width="100" />
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("QuanLyHoaDonCustomer","Invoice", new { StoreID = ViewBag.StoreID, CustomerID = item.CustomerID, page = 1 })">Lịch sử đặt hàng</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="6">
+                        Không có dữ liệu
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("QuanLyKhachHang", new { StoreID = ViewBag.StoreID, page }))
+</div>

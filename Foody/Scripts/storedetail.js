@@ -1,6 +1,6 @@
 ﻿var baseUrl = $("#BaseUrl").data("baseurl");
 var storeID = $("#BaseUrl").data("storeid");
-
+var customerID = $("#BaseUrl").data("customerid");
 $(window).resize(function () {
     if ($('.modal.in').length != 0) {
         setModalMaxHeight($('.modal.in'));
@@ -214,6 +214,10 @@ function deleteCartError() {
 }
 
 function datHang() {
+    if (customerID == null || customerID=="") {
+        window.location.href = "/Account/login";
+        return;
+    }
     if (gloListFood != null && gloListFood.length > 0) {
         $('#mapmodals').modal('show');
         $('#mapmodals').on('shown.bs.modal', function () {

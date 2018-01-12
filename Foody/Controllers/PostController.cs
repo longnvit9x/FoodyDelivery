@@ -25,12 +25,19 @@ namespace Foody.Controllers
             var lstPost = db.Posts.Where(n => n.StoreID == stID)
                 .OrderByDescending(n => n.PostTime).ToList();
             ViewBag.StoreID = StoreID;
+            var storeAdmin = 0;
             if (Session["TaiKhoan"] != null)
             {
                 Customer cus = (Customer)Session["TaiKhoan"];
                 ViewBag.Avatar = cus.FileData.URL;
                 ViewBag.CustomerID = cus.CustomerID;
+                var store = db.Stores.Where(n => n.StoreID == stID).SingleOrDefault();
+                if (store != null && store.CustomerID.Equals(cus.CustomerID))
+                {
+                    storeAdmin = 1;
+                }
             }
+            ViewBag.StoreAdmin = storeAdmin;
             return PartialView(lstPost);
         }
 
@@ -67,7 +74,8 @@ namespace Foody.Controllers
                         Like = 0,
                         View = 0,
                         PostTime = DateTime.Now,
-                        Status=0
+                        Status = 0,
+                        Hide = 0
                     };
                     if (ModelState.IsValid)
                     {
@@ -200,8 +208,8 @@ namespace Foody.Controllers
                         PostID = commentData.PostID,
                         CustomerID = cus.CustomerID,
                         CommentContent = commentData.CommentContent,
-                        CommentTime= DateTime.Now,
-                        CommentLike=0,
+                        CommentTime = DateTime.Now,
+                        CommentLike = 0,
                     };
                     if (ModelState.IsValid)
                     {
@@ -210,13 +218,103 @@ namespace Foody.Controllers
                     }
                     CommentDto comDto = new CommentDto()
                     {
-                        Avatar= cus.FileData.URL,
-                        FullName= cus.FullName,
-                        CommentContent= postComment.CommentContent,
-                        CommentLike= (int) postComment.CommentLike,
-                        CommentTime= postComment.CommentTime.ToString()
+                        PostCommentID= postComment.PostCommentID,
+                        Avatar = cus.FileData.URL,
+                        FullName = cus.FullName,
+                        CommentContent = postComment.CommentContent,
+                        CommentLike = (int)postComment.CommentLike,
+                        CommentTime = postComment.CommentTime.ToString()
                     };
                     return Json(comDto);
+                }
+                catch
+                {
+                    return Json(null);
+                }
+            }
+            return Json(null);
+        }
+
+        [HttpPost]
+        public JsonResult deleteComment(int PostCommentID)
+        {
+            if (PostCommentID != 0 && Session["TaiKhoan"] != null)
+            {
+                try
+                {
+                    Customer cus = (Customer)Session["TaiKhoan"];
+                    PostComment postComment = db.PostComments.Where(n => n.PostCommentID == PostCommentID).SingleOrDefault();
+                    if (postComment != null)
+                    {
+                        db.Entry(postComment).State = System.Data.Entity.EntityState.Deleted;
+                        db.SaveChanges();
+                        return Json(PostCommentID);
+                    }
+                }
+                catch
+                {
+                    return Json(null);
+                }
+            }
+            return Json(null);
+        }
+
+        [HttpPost]
+        public JsonResult deletePost(int PostID)
+        {
+            if (PostID != 0 && Session["TaiKhoan"] != null)
+            {
+                try
+                {
+                    Customer cus = (Customer)Session["TaiKhoan"];
+                    Post post = db.Posts.Where(n => n.PostID == PostID).SingleOrDefault();
+                    if (post != null)
+                    {
+                        List<PostComment> postComment = db.PostComments.Where(n => n.PostID == PostID).ToList();
+                        foreach (var comment in postComment)
+                        {
+                            db.Entry(comment).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                        List<PostLike> postLike = db.PostLikes.Where(n => n.PostID == PostID).ToList();
+                        foreach (var like in postLike)
+                        {
+                            db.Entry(like).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                        List<PostImage> postImage = db.PostImages.Where(n => n.PostID == PostID).ToList();
+                        foreach (var image in postImage)
+                        {
+                            db.Entry(image).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                        db.Entry(post).State = System.Data.Entity.EntityState.Deleted;
+                        db.SaveChanges();
+                        return Json(PostID);
+                    }
+                }
+                catch
+                {
+                    return Json(null);
+                }
+            }
+            return Json(null);
+        }
+
+        [HttpPost]
+        public JsonResult hidePost(int PostID)
+        {
+            if (PostID != 0 && Session["TaiKhoan"] != null)
+            {
+                try
+                {
+                    Customer cus = (Customer)Session["TaiKhoan"];
+                    Post post = db.Posts.Where(n => n.PostID == PostID).SingleOrDefault();
+                    if (post != null)
+                    {
+                        post.Hide = 1;
+                        db.Entry(post).State = System.Data.Entity.EntityState.Modified;
+                        var postLike = db.PostLikes.Where(n => n.PostID == PostID).ToList();
+                        db.SaveChanges();
+                        return Json(PostID);
+                    }
                 }
                 catch
                 {

@@ -1,0 +1,106 @@
+﻿@model Foody.Models.Store
+
+@{
+    ViewBag.Title = "ThongKe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section menuleft{
+    @Html.Action("MenuStoreAdmin", "Store", new { StoreID = ViewBag.StoreID })
+}
+
+<div class="table-container">
+    <h4 class="txt-title">Thống kê</h4>
+</div>
+<div class="table-container">
+    <p style="font-weight:bold"> Thống kê theo ngày</p>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+    </div>
+</div>
+<div class="table-container">
+    <p style="font-weight:bold"> Thống kê theo tháng</p>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <span for="slmonth">
+                Chọn tháng:
+                <select id="slmonth" class="form-control" style="width:100px; display:inherit">
+                    @for (var i = 1; i <= 12; i++)
+                    {
+                        <option>@i</option>
+                    }
+                </select>
+            </span>
+        </div>
+        <div class="col-md-3">
+            <span for="slyear">
+                Chọn năm
+                <select id="slyear" class="form-control" style="width:100px; display:inherit">
+                    @for (var i = 2000; i <= 2050; i++)
+                    {
+                        <option>@i</option>
+                    }
+                </select>
+            </span>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-default form-control" onclick="loadThongKe()">Thống kê</button>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <p>Tổng số đơn đặt hàng:</p>
+            <p>Tổng số tiền thu được:</p>
+        </div>
+        <div class="col-md-6">
+            <p>Tổng số lượt bình luận đánh giá:</p>
+            <p>Tổng số khách hàng:</p>
+        </div>
+    </div>
+    <hr />
+    <p style="font-weight:bold"> Biểu đồ số lượng đơn hàng, binh luận theo ngày trong tháng</p>
+    <div id="container" style="width: 100%;">
+        <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+        <canvas id="canvas" width="1000" height="500" class="chartjs-render-monitor" style="display: block;"></canvas>
+    </div>
+    <hr />
+    <p style="font-weight:bold"> Biểu đồ số lượng đơn hàng, doanh thu theo ngày trong tháng</p>
+    <div style="width:100%">
+        <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+        <canvas id="myline" width="1000" height="500" class="chartjs-render-monitor" style="display: block; width: 1000px; height: 500px;"></canvas>
+    </div>
+</div>
+
+<div class="table-container">
+    <p style="font-weight:bold"> Thống kê theo năm</p>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <span for="slyear1">
+                Chọn năm
+                <select id="slyear1" class="form-control" style="width:100px; display:inherit">
+                    @for (var i = 2000; i <= 2050; i++)
+                    {
+                        <option>@i</option>
+                    }
+                </select>
+            </span>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-default form-control" onclick="loadThongKeNam()">Thống kê</button>
+        </div>
+    </div>
+</div>
+
+<div id="BaseUrl"
+     data-storeid="@ViewBag.StoreID"
+     data-baseurl="@Context.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")"></div>
+<script src="~/Scripts/thongke.js"></script>
+
+
+
+

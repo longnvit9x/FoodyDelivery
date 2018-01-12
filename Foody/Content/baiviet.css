@@ -262,12 +262,19 @@
   position: relative;
 }
  .box > .box-comments > .comment {
-  border-top: 1px solid #e1d6d6;
+  background: #EEF;
+  border-top: 1px solid #fff;
   margin: 0;
   overflow: hidden;
   padding: 5px 10px;
   position: relative;
 }
+ .btn-delete-post{
+    position: absolute;
+    top: -10px;
+    right: 25px;
+ }
+
  .box > .box-comments > .comment > img {
   border-radius: 100px;
   float: left;
@@ -308,8 +315,8 @@
   word-wrap: break-word;
 }
  .box > .box-new-comment {
-  /*background: #9298A4;*/
-  border-top: 1px solid #F4F4F4;
+  background: #EEF;
+  border-top: 1px solid #fff;
   margin: 0;
   overflow: hidden;
   padding: 10px 30px;
@@ -317,6 +324,8 @@
 }
  .box > .box-new-comment > img {
   border-radius: 100px;
+  background: #ffff;
+  border:1px solid #d4cdcd;
   float: left;
   height: 32px;
   margin: 0;
@@ -363,6 +372,7 @@
   border: 1px solid #dddfe2;
   border-radius: 10px;
   margin-bottom:5px;
+  background: #FFF;
   color: #555;
   outline: 0;
   padding: 0 0px 0px 10px;

@@ -54,6 +54,7 @@
         width: 100%;
     }
 </style>
+
 @foreach (var item in Model)
 {   <div class="donhang-container">
         <div class="row donhang-header">
@@ -62,7 +63,7 @@
             <div class="col-md-3 donhang-total">Tổng tiền: @item.TotalPrice VND</div>
             @if (item.Status < 2)
             {
-                <div  id="btnHuyDon_@item.InvoiceID" class="col-md-1"><a onclick="huyDon('@item.InvoiceID', 5)" style="color:red">Hủy đơn</a></div>
+                <div id="btnHuyDon_@item.InvoiceID" class="col-md-1"><a onclick="huyDon('@item.InvoiceID', 5)" style="color:red">Hủy đơn</a></div>
             }
         </div>
         <hr />
@@ -89,14 +90,14 @@
             }
             @if (item.Status == 2)
             {
-                <div  id="CheBien_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
+                <div id="CheBien_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
                     <p><span class="fa fa-circle"></span></p>
                     <p>Đang chế biến</p>
                 </div>
             }
             else
             {
-                <div  id="CheBien_@item.InvoiceID" class="col-md-2 donhang-status">
+                <div id="CheBien_@item.InvoiceID" class="col-md-2 donhang-status">
                     <p><span class="fa fa-circle"></span></p>
                     <p>Đang chế biến</p>
                 </div>
@@ -118,7 +119,7 @@
             @if (item.Status == 4)
             {
                 <div id="HoanThanh_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
-                    <p><span  class="fa fa-circle"></span></p>
+                    <p><span class="fa fa-circle"></span></p>
                     <p>Đang hoàn thành</p>
                 </div>
             }
@@ -129,10 +130,10 @@
                     <p>Đang hoàn thành</p>
                 </div>
             }
-           
+
             @if (item.Status == 5)
             {
-                <div id="HuyBo_@item.InvoiceID"  class="col-md-2 donhang-status donhang-status-red">
+                <div id="HuyBo_@item.InvoiceID" class="col-md-2 donhang-status donhang-status-red">
                     <p><span class="fa fa-circle"></span></p>
                     <p>Hủy bỏ</p>
                 </div>
@@ -238,6 +239,14 @@
                 </div>
             </div>
         </div>
+    </div>
+}
+
+@if (Model.Count() == 0)
+{
+    <div class="donhang-container">
+        Bạn chưa đặt hàng lần nào, hãy tiến hành mua hàng...=>
+        <a href="@Url.Action("Index","Home")">Mua hàng</a>
     </div>
 }
 <div id="BaseUrl"

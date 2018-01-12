@@ -59,32 +59,26 @@
         <ul class="nav navbar-nav">
             <li class="active">
                 <a href="#tab1default" data-toggle="tab">
-                    <i class="fa fa-phone"></i>
+                    <i class="fa fa-cutlery" aria-hidden="true"></i>
                     Thực đơn
                 </a>
             </li>
             <li>
                 <a href="#tab2default" data-toggle="tab" class="tool-custom-list-add">
-                    <i class="fa fa-bookmark"></i>
-                    Lưu vào Bộ sưu tập (155)
-                </a>
-            </li>
-            <li>
-                <a href="#tab3default" data-toggle="tab">
                     <i class="fa fa-comment"></i>
                     Bình luận
                 </a>
             </li>
             <li>
-                <a resid="243395" ng-click="ShowDlgUploadPhoto()">
+                <a href="#tab3default" data-toggle="tab">
                     <i class="fa fa-camera"></i>
                     Hình ảnh
                 </a>
             </li>
             <li>
-                <a style="border-right: none;">
+                <a resid="243395" ng-click="ShowDlgUploadPhoto()">
                     <i class="fa fa-share-alt"></i>
-                    Chia sẻ
+                   Liên hệ
                 </a>
             </li>
         </ul>
@@ -113,13 +107,12 @@
         @Html.Action("StoreDetail", "Store", new { StoreID = Model.StoreID })
     </div>
     <div class="tab-pane fade" id="tab2default">
-        Default 2
-    </div>
-    <div class="tab-pane fade" id="tab3default">
         @Html.Action("BaiVietStore", "Post", new { StoreID = Model.StoreID })
     </div>
+    <div class="tab-pane fade" id="tab3default">
+       
+    </div>
     <div class="tab-pane fade" id="tab4default">Default 4</div>
-    <div class="tab-pane fade" id="tab5default">Default 5</div>
 </div>
 @*</div>
     </div>*@

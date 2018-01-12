@@ -27,6 +27,8 @@ namespace Foody.Models
             [Display(Name = "Cửa hàng")]
             [Required(ErrorMessage = "Vui lòng nhập dữ liệu cho trường này.")]
             public Nullable<System.Guid> StoreID { get; set; }
+            [Required(ErrorMessage = "Vui lòng nhập dữ liệu cho trường này.")]
+            public string KeySale { get; set; }
         }
     }
 }
